@@ -1,21 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Text, View } from 'react-native';
-import MyComponent from './components/AppBar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import {app, analytics, auth} from './firebase';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <SafeAreaProvider>
-    <View className="flex-1 items-center justify-center bg-red">
-      <View className="bg-blue-500 text-white font-bold rounded-lg border shadow-lg p-10">
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-        <MyComponent/>
-        <StatusBar style="auto" />
-      </View>
-    </SafeAreaProvider>
+      <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </Stack.Navigator>
+      </NavigationContainer>
   );
-}
+};
+
+export default App;
