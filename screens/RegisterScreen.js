@@ -1,15 +1,18 @@
-import { View, StyleSheet} from "react-native";
-import { TextInput, Button, Title, HelperText } from 'react-native-paper';
+import { View } from "react-native";
+import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const RegisterScreen = ({ navigation }) => {
 
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [repeatPassword,setRepeatPassword] = useState("");
+    const [fullName,setFullName] = useState("");
     const [errors,setErrors] = useState({
         email:"",
+        fullName:"",
         password:"",
         repeatPassword:""
     })
@@ -29,6 +32,10 @@ const RegisterScreen = ({ navigation }) => {
 
         if(!password){
             newErrors.password = "Password is required";
+        }
+
+        if(!fullName){
+            newErrors.fullName = "Full Name is required";
         }
 
         if(!repeatPassword){
@@ -68,83 +75,78 @@ const RegisterScreen = ({ navigation }) => {
             })
         }
     }
-    return (
-        <View style={styles.container}>
-            <Title style={styles.title}>Sign Up</Title>
-            <View style>
-            <TextInput 
-                left={<TextInput.Icon icon="email"/>}
-                label="Email"
-                value={email}
-                mode="outlined" 
-                onChangeText={(email)=>{
-                  
-                    setEmail(email)
-                    setErrors(errors=>({...errors, email: ""}))
-                }}
-                error={errors.email !== ""}
-            />
-            <HelperText type="error" visible={errors.email !== ""}>{errors.email}</HelperText>
-            <TextInput
-                left={<TextInput.Icon icon="key"/>}
-                label="Password" 
-                value={password}
-                mode="outlined" 
-                onChangeText={(password)=>{
-
-                    setPassword(password)
-                    setErrors(errors=>({...errors, password: ""}))
-
-                }}
-                error={errors.password !== ""}
-                secureTextEntry
-            />
-            <HelperText type="error" visible={errors.password !== ""}>{errors.password}</HelperText>
-             <TextInput
-                left={<TextInput.Icon icon="key"/>}
-                label="Repeat Password" 
-                value={repeatPassword}
-                mode="outlined" 
-                onChangeText={(password)=>{
-
-                    setRepeatPassword(password)
-                    setErrors(errors=>({...errors, repeatPassword: ""}))
-
-                }}
-                error={errors.repeatPassword !== ""}
-                secureTextEntry
-            />
+    return(
+        <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse">
+            <View className=" h-4/5 bg-white rounded-t-3xl p-4">
+                <View className="mt-4">
+                    <Title className="text-3xl font-bold text-[poppins]">Sign Up</Title>
+                    <Text className="text-[#656565] text-lg mb-2" >Create an account</Text>
+                    <Text className="mb-2" >Email</Text>
+                    <TextInput 
+                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+                        value={email}
+                        mode="flat"
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        onChangeText={(email)=>{
+                            setEmail(email)
+                            setErrors(errors=>({...errors, email: ""}))
+                        }}
+                        error={errors.email !== ""}
+                    />
+                    <HelperText type="error" visible={errors.email !== ""}>{errors.email}</HelperText>
+                    <Text className="mb-2" >Full Name</Text>
+                    <TextInput
+                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+                        value={fullName}
+                        mode="flat"
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        onChangeText={(fullName)=>{
+                            setFullName(fullName)
+                            setErrors(errors=>({...errors, fullName: ""}))
+                        }}
+                        error={errors.fullName !== ""}
+                    />
+                    <HelperText type="error" visible={errors.fullName !== ""}>{errors.fullName}</HelperText>
+                    <Text className="mb-2" >Password</Text>
+                    <TextInput
+                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+                        value={password}
+                        mode="flat"
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        onChangeText={(password)=>{
+                            setPassword(password)
+                            setErrors(errors=>({...errors, password: ""}))
+                        }}
+                        error={errors.password !== ""}
+                        secureTextEntry
+                    />
+                    <HelperText type="error" visible={errors.password !== ""}>{errors.password}</HelperText>
+                    <Text className="mb-2" >Repeat Password</Text>
+                    <TextInput
+                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+                        value={repeatPassword}
+                        mode="flat"
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        onChangeText={(password)=>{
+                            setRepeatPassword(password)
+                            setErrors(errors=>({...errors, repeatPassword: ""}))
+                        }}
+                        error={errors.repeatPassword !== ""}
+                        secureTextEntry
+                    />
+                    <HelperText type="error" visible={errors.repeatPassword !== ""}>{errors.repeatPassword}</HelperText>
+                </View>
+                <Button mode="contained" onPress={handleRegister} className="bg-loaknow-blue rounded-full">
+                    <Text className="text-lg text-loaknow-yellow">Sign Up</Text>
+                </Button>
+                <Text className="text-center mt-4">Already have an account? <Text onPress={()=>navigation.navigate('Login')} className="text-loaknow-blue">Login</Text></Text>
             </View>
-            <HelperText type="error" visible={errors.repeatPassword !== ""}>{errors.repeatPassword}</HelperText>
-            <Button mode="contained" onPress={handleRegister} style={styles.button}>
-                Sign Up
-            </Button>
-           
-           
-            {/* <Link href="/sign-in" >Already have account?</Link>
-            <Link href="/" >Go To Landing</Link> */}
-            
         </View>
     );
-
-    
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      paddingHorizontal: 20,
-    },
-    title: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: 20,
-    },
-    button: {
-      marginBottom: 10,
-    },
-  });
 
   export default RegisterScreen;

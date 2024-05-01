@@ -19,13 +19,6 @@ const HomeScreen = ({ navigation }) => {
     
   }, []);
 
-  const goToLogin = () => {
-    navigation.navigate('Login'); // Navigasi ke halaman Login
-  };
-
-  const goToRegister = () => {
-    navigation.navigate('Register'); // Navigasi ke halaman Register
-  };
   const handleLogout = () => {
     signOut(auth).then(() => {
       console.log('Logout success');
@@ -44,10 +37,13 @@ const HomeScreen = ({ navigation }) => {
       ) : (
         <>
           <View style={styles.buttonContainer}>
-            <Button title='Go to Login' onPress={goToLogin} />
+            <Button title='Go to Login' onPress={()=>navigation.navigate('Login')} />
           </View>
           <View style={styles.buttonContainer}>
-            <Button title='Go to Register' onPress={goToRegister} />
+            <Button title='Go to Register' onPress={()=>navigation.navigate('Register')} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to Landing' onPress={()=>navigation.navigate('Landing')} />
           </View>
         </>
       )}
@@ -60,6 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#1B75BB',
   },
   title: {
     fontSize: 24,
