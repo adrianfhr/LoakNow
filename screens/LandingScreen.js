@@ -6,6 +6,7 @@ import { Image } from "react-native";
 import BottomNav from "../components/BottomNav";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
+import ModalProduct from "../components/Modal";
 
 
 
