@@ -5,6 +5,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LandingScreen from './screens/LandingScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import {app, analytics, auth} from './firebase';
 
 const Stack = createStackNavigator();
@@ -15,8 +16,9 @@ const App = () => {
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
             <Stack.Screen name="Landing" component={LandingScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
           </Stack.Navigator>
       </NavigationContainer>
   );

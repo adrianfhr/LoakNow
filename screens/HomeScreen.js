@@ -45,6 +45,9 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <Button title='Go to Landing' onPress={()=>navigation.navigate('Landing')} />
           </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to Profile' onPress={()=>navigation.navigate('Profile')} />
+          </View>
         </>
       )}
     </View>
