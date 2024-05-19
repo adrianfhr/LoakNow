@@ -15,22 +15,23 @@ const SellProductScreen = ({ navigation }) => {
         
         
         const handlePress1 = () => {
-        setShowNewView1(!showNewView1);
+            setShowNewView1(!showNewView1);
+             
         };
         
         const handlePress2 = () => {
-        setShowNewView2(!showNewView2);
+            setShowNewView2(!showNewView2);
         };
 
         
         return (
             <View className="flex-1 bg-white">
                 <View className="mx-7">
-                    <View className="border-b-[1px] border-loaknow-gray flex flex-row items-center pb-3 ">
-                        <View className="justify-center items-center mr-3">
-                            <Text className="rotate-180  text-3xl ">&gt;</Text>
+                    <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 mt-3">
+                        <View className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
+                            <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
                         </View>
-                        <View className="justify-center items-center">
+                        <View className=" ml-3 justify-center items-center">
                             <Text className=" font-semibold text-xl  ">Sell Product</Text>
                         </View>
                     </View>

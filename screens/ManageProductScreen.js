@@ -1,24 +1,19 @@
-import { ScrollView,TouchableOpacity,View } from "react-native";
-import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
-import { useState } from "react";
-import Searchingbar from "../components/SearchBar";
+import { View } from "react-native";
+import { Text } from 'react-native-paper';
 import { Image } from "react-native";
-import BottomNav from "../components/BottomNav";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
-import ModalProduct from "../components/Modal";
 
 
 const ManageProductScreen = ({ navigation }) => {
         return (
             <View className="flex-1 bg-white">
                 <View className="mx-7">
-                    <View className="border-b-[1px] border-loaknow-gray flex flex-row items-center pb-3 ">
-                        <View className="justify-center items-center mr-3">
-                            <Text className="rotate-180  text-3xl ">&gt;</Text>
+                    <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 mt-3">
+                        <View className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
+                            <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
                         </View>
-                        <View className="justify-center items-center">
-                            <Text className=" font-semibold text-xl  ">Sell Product</Text>
+                        <View className=" ml-3 justify-center items-center">
+                            <Text className=" font-semibold text-xl  ">Manage Product</Text>
                         </View>
                     </View>
                     <View className="flex flex-row border-b-2 border-loaknow-bg/20 justify-between items-center px-16 my-2 mb-5">

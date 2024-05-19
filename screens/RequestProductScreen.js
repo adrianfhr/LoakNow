@@ -29,17 +29,17 @@ const RequestProductScreen = ({ navigation }) => {
         return (
             <View className="flex-1 bg-white">
                 <View className="mx-7">
-                    <View className="border-b-[1px] border-loaknow-gray flex flex-row items-center pb-3 ">
-                        <View className="justify-center items-center mr-3">
-                            <Text className="rotate-180  text-3xl ">&gt;</Text>
+                    <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 mt-3">
+                        <View className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
+                            <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
                         </View>
-                        <View className="justify-center items-center">
-                            <Text className=" font-semibold text-xl  ">Sell Product</Text>
+                        <View className=" ml-3 justify-center items-center">
+                            <Text className=" font-semibold text-xl  ">Request Product</Text>
                         </View>
                     </View>
                     {/* isi page */}
                     <View>
-                        <Text className="font-semibold text-base mb-3">Product Picture & Video *</Text>
+                        <Text className="font-semibold text-base my-3">Product Picture & Video *</Text>
                         <View className="flex flex-row mb-3">
                             <Image className="mr-2" source={require('../assets/images/product-image.png')} style={{ width: 90, height: 90 }} />
                             <Image className="mr-2" source={require('../assets/images/product-image.png')} style={{ width: 90, height: 90 }} />
@@ -118,7 +118,7 @@ const RequestProductScreen = ({ navigation }) => {
                             showModal();
                         }}>
 
-                            {showNewView ? (
+                            {!showNewView ? (
                                 <View className="bg-loaknow-yellow items-center justify-center rounded-full p-3 mt-4">
                                     <Text className="font-semibold text-base">Request</Text>
                                 </View>
@@ -140,7 +140,11 @@ const RequestProductScreen = ({ navigation }) => {
                         onRequestClose={hideModal}
 
                     >
-                        <TouchableWithoutFeedback onPress={hideModal}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            hideModal();
+                            handlePress();
+                            navigation.navigate("Landing")
+                        }}>
 
                             <View className="flex-1 items-center justify-center bg-white/90">
                                 <Image source={require('../assets/images/success.png')} />

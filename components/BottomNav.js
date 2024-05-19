@@ -11,7 +11,7 @@ const AddRoute = () => <Text>Add</Text>;
 const PurchasedRoute = () => <Text>Purchased</Text>;
 const AccountRoute = () => <Text>Account</Text>;
 
-const BottomNav = () => {
+const BottomNav = ( {navigation} ) => {
   const [index, setIndex] = React.useState(0);
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -21,13 +21,24 @@ const BottomNav = () => {
 
   const handlePress1 = () => {
     setShowNewView1(!showNewView1);
+    navigation.navigate("SellProduct");
+    handleIndexChange(0);
+    hideModal();
+    
   };
 
   const handlePress2 = () => {
     setShowNewView2(!showNewView2);
+    navigation.navigate("ManageProduct");
+    handleIndexChange(0);
+    hideModal();
   };
 
-  const showModal = () => setModalVisible(true);
+  const showModal = () => {
+    setModalVisible(true);
+    setShowNewView1(false);
+    setShowNewView2(false);
+  }
   const hideModal = () => setModalVisible(false);
 
   const handleIndexChange = (newIndex) => {
@@ -109,7 +120,7 @@ const BottomNav = () => {
               </View>
               ) : (
                 <View className=" rounded-[50px] w-40 h-40 flex items-center justify-center bg-loaknow-blue">
-                <Image className="" source={require('../assets/images/manage-product-pressed.png')} style={{width:80, height:80}}/>
+                <Image className="" source={require('../assets/images/manage-product-pressedd.png')} style={{width:80, height:80}}/>
                 <Text className="text-base font-semibold text-loaknow-yellow">Manage Product</Text>
               </View>
               )}
