@@ -1,10 +1,9 @@
 import { View } from "react-native";
 import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Image } from "react-native";
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { firestore } from "../firebase";
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -18,7 +17,6 @@ const RegisterScreen = ({ navigation }) => {
         password:"",
         repeatPassword:""
     })
-    const auth = getAuth();
 
     const validate = ()=>{
 
@@ -52,74 +50,40 @@ const RegisterScreen = ({ navigation }) => {
 
     }
 
-    // const handleRegister = ()=>{
-    //     const findErrors = validate();
+    const handleRegister = ()=>{
+        auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                console.log('User account created & signed in!');
+                firestore()
+                    .collection('users')
+                    .add({
+                        email: email,
+                        fullName: fullName,
+                        address: '',
+                        phone: '',
+                        orders: [],
+                        created_at: firestore.FieldValue.serverTimestamp(),
+                        updated_at: firestore.FieldValue.serverTimestamp(),
+                    })
+                    .then(() => {
+                        console.log('User added!');
+                    });
+                navigation.navigate('Home')
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                    newErrors.email = "That email address is already in use!";
+                }
 
-    //     if(Object.values(findErrors).some(value=> value !== "")){
-    //         console.log(findErrors)
-    //         setErrors(findErrors)
-    //     }else{
-    //         createUserWithEmailAndPassword(auth,email,password).then(res=>{
-    //             console.log("login success",res)
-    //             navigation.navigate('Home');
-    //         }).catch((error)=>{
-    //             console.log("error",error)
-    //             let newErrors = {
-    //                 email: "",
-    //                 password:""
-    //             }
-    //             if(error.code === "auth/invalid-credential"){
-    //                 newErrors.email = "Invalid Email";
-    //             }else if(error.code === "auth/email-already-in-use"){
-    //                 newErrors.email = "Email already in use";
-    //             }
-    //             setErrors(newErrors)
-    //         })
-    //     }
-    // }
-    const handleRegister = async () => {
-        const findErrors = validate();
-    
-        if (Object.values(findErrors).some(value => value !== "")) {
-          console.log(findErrors);
-          setErrors(findErrors);
-          return; // Keluar dari fungsi jika validasi gagal
-        }
-    
-        try {
-          const { user } = await createUserWithEmailAndPassword(auth, email, password);
-          console.log("Registrasi berhasil:", user);
-    
-          // Buat dokumen pengguna baru dalam koleksi Firestore
-          const userRef = doc(firestore, 'users', user.uid);
-          await setDoc(userRef, {
-            name: fullName,
-            email: email,
-            address: '',
-            phone: '',
-            orders: [],
-            created_at: serverTimestamp(),
-            updated_at: serverTimestamp(),
-          });
-    
-          // Navigasi ke halaman Home atau halaman lain
-          // navigation.navigate('Home');
-        } catch (error) {
-          console.error("Kesalahan registrasi:", error);
-          let newErrors = {
-            email: "",
-            password: "",
-          };
-    
-          if (error.code === "auth/invalid-credential") {
-            newErrors.email = "Email tidak valid";
-          } else if (error.code === "auth/email-already-in-use") {
-            newErrors.email = "Email sudah digunakan";
-          }
-    
-          setErrors(newErrors);
-        }
-      };
+                if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                    newErrors.email = "That email address is invalid!";
+                }
+
+                console.error(error);
+            });
+    }
     
       
     return(

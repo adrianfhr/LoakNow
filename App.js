@@ -6,8 +6,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LandingScreen from './screens/LandingScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import FCMScreen from './screens/FCMScreen';
-import {app, analytics, auth} from './firebase';
+// import FCMScreen from './screens/FCMScreen'
 
 const Stack = createStackNavigator();
 
@@ -20,7 +19,7 @@ const App = () => {
             <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
             <Stack.Screen name="Landing" component={LandingScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
-            <Stack.Screen name="FCM" component={FCMScreen} />
+            {/* <Stack.Screen name="FCM" component={FCMScreen} /> */}
           </Stack.Navigator>
       </NavigationContainer>
   );

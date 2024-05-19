@@ -1,11 +1,10 @@
 import { View, StyleSheet, Image} from "react-native";
 import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import auth from '@react-native-firebase/auth';
 
 const LoginScreen = ({ navigation }) => {
 
-    const auth = getAuth();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [errors,setErrors] = useState({
@@ -41,20 +40,29 @@ const LoginScreen = ({ navigation }) => {
             console.log(findErrors)
             setErrors(findErrors)
         }else{
-            signInWithEmailAndPassword(auth,email,password).then(res=>{
-                console.log("login success",res)
-                navigation.navigate('Home');
-            }).catch((error)=>{
-                console.log("error",error)
-                let newErrors = {
-                    email: "",
-                    password:""
-                }
-                setErrors(newErrors)
-            })
+            auth()
+                .signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    console.log('User account created & signed in!');
+                    navigation.navigate('Home')
+                })
+                .catch(error => {
+                    if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                    
+                    }
+
+                    if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                    }
+
+                    console.error(error);
+
+  });
 
         }
     }
+
     return (
         <View className="bg-loaknow-blue w-screen h-full flex-col-reverse overflow-scroll">
         <View className="bg-white rounded-t-3xl px-4 py-8">
