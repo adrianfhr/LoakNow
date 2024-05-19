@@ -26,7 +26,7 @@ const SellProductScreen = ({ navigation }) => {
         
         return (
             <View className="flex-1 bg-white">
-                <View className="mx-7">
+                <View className=" flex-1 mx-7">
                     <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 mt-3">
                         <View className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
                             <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
@@ -35,7 +35,7 @@ const SellProductScreen = ({ navigation }) => {
                             <Text className=" font-semibold text-xl  ">Sell Product</Text>
                         </View>
                     </View>
-                    <View className="h-full  flex items-center justify-center">
+                    <View className="absolute top-0 left-0 right-0 bottom-0 items-center justify-center">
                         <View className="rounded-lg">
                             <View className="justify-center flex items-center mb-3">
                                 <Text>What type of sales do you want?</Text>
