@@ -10,6 +10,7 @@ import SellProductScreen from './screens/SellProductScreen';
 import {app, analytics, auth} from './firebase';
 import BottomNav from './components/BottomNav';
 import RequestProductScreen from './screens/RequestProductScreen';
+import ManageProductScreen from './screens/ManageProductScreen';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const App = () => {
             <Stack.Screen name="Cart" component={CartScreen} options={{animationEnabled:false}} />
             <Stack.Screen name="SellProduct" component={SellProductScreen} options={{animationEnabled:false}} />
             <Stack.Screen name="RequestProduct" component={RequestProductScreen} options={{animationEnabled:false}} />
+            <Stack.Screen name="ManageProduct" component={ManageProductScreen} options={{animationEnabled:false}} />
 
 
             

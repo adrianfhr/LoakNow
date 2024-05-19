@@ -54,6 +54,9 @@ const HomeScreen = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <Button title='Go to Request Product' onPress={()=>navigation.navigate('RequestProduct')} />
           </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to Manage Product' onPress={()=>navigation.navigate('ManageProduct')} />
+          </View>
         </>
       )}
     </View>
