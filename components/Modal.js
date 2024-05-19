@@ -5,7 +5,7 @@ const ModalProduct = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View style={styles.centeredView}>
+    <View  style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}

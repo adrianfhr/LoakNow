@@ -12,7 +12,7 @@ import ModalProduct from "../components/Modal";
 
 const LandingScreen = ({ navigation }) => {
         return (
-            <View>
+            <View className="flex-1 bg-white">
                 <ScrollView className=" mb-[60px]">
                     <View className="mx-7">
                         <View className="flex flex-row items-center my-2">
@@ -20,7 +20,7 @@ const LandingScreen = ({ navigation }) => {
                                 <Image className=""source={require('../assets/images/burger.png')} style={{width:30, height:30}}/>
                             </View>
                             <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row ">
-                                <Text className="font-semibold text-base mr-2">Jatinangor, West Java </Text>
+                                <Text className="font-semibold text-base mr-2" onPress={() => navigation.navigate('Cart')}>Jatinangor, West Java </Text>
                                 <View className="flex justify-center items-center">
                                     <Text className="rotate-90 text-loaknow-blue font-semibold text-xs">&gt;</Text>
                                 </View>
@@ -56,6 +56,7 @@ const LandingScreen = ({ navigation }) => {
                                 <Image source={require('../assets/images/categories1.png')} className="" style={{width:70, height:70}}/>
                             </View>       
                         </View>
+        
                         <Text className="text-lg font-bold mb-4">New Arrival</Text>
                         <View className="flex flex-row flex-wrap justify-between gap-5">
                             <View className=" bg-loaknow-bg/20 rounded-xl p-2 w-40">
@@ -113,7 +114,7 @@ const LandingScreen = ({ navigation }) => {
                     </View>
                 </ScrollView>
                     <View className="absolute bottom-0 left-0 right-0">
-                        <BottomNav/>
+                        <BottomNav navigation={navigation}/>
                     </View>
             </View>
         );

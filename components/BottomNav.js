@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
-import { View, StyleSheet, Button, Modal } from 'react-native';
+import { View, StyleSheet, Button, Modal, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Image } from 'react-native';
+import { useState } from 'react';
 
 const HomeRoute = () => <Text>Home</Text>;
 const CartRoute = () => <Text>Cart</Text>;
@@ -11,6 +14,18 @@ const AccountRoute = () => <Text>Account</Text>;
 const BottomNav = () => {
   const [index, setIndex] = React.useState(0);
   const [modalVisible, setModalVisible] = React.useState(false);
+
+  const [showNewView1, setShowNewView1] = useState(false);
+  const [showNewView2, setShowNewView2] = useState(false);
+
+
+  const handlePress1 = () => {
+    setShowNewView1(!showNewView1);
+  };
+
+  const handlePress2 = () => {
+    setShowNewView2(!showNewView2);
+  };
 
   const showModal = () => setModalVisible(true);
   const hideModal = () => setModalVisible(false);
@@ -28,12 +43,10 @@ const BottomNav = () => {
     else {
       setIndex(newIndex);
     }
-    
   };
 
   const handleModalClose = (setIndex) => {
-    // Fungsi yang ingin dijalankan saat modal ditutup
-    hideModal(); // Fungsi hideModal juga dijalankan
+    hideModal();
     setIndex(0);
   };
 
@@ -63,15 +76,52 @@ const BottomNav = () => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={handleModalClose}
+        onRequestClose={() => handleModalClose()}
 
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text>This is a modal</Text>
-            <Button title="Close Modal" onPress={hideModal} />
-          </View>
-        </View>
+        <TouchableWithoutFeedback onPress={() => {
+          hideModal();
+          handleIndexChange(0);
+        }}>
+          
+            <View  className="flex-1 items-center justify-between flex-row px-10 " style={styles.modalContainer}>
+              <TouchableOpacity onPress={handlePress1}>
+
+              {!showNewView1 ? (
+                <View className="rounded-[50px] w-40 h-40 flex shadow-2xl items-center justify-center bg-loaknow-yellow">
+                  <Image className="" source={require('../assets/images/cart-product.png')} style={{width:80, height:80}}/>
+                  <Text className="text-base font-semibold">Sell Product</Text>
+                </View>
+                ) : (
+                <View className="rounded-[50px] w-40 h-40 flex shadow-2xl items-center justify-center bg-loaknow-blue">
+                  <Image className="" source={require('../assets/images/cart-product-pressed.png')} style={{width:80, height:80}}/>
+                  <Text className="text-base font-semibold text-loaknow-yellow">Sell Product</Text>
+                </View>
+                )}
+                
+              </TouchableOpacity>
+            
+            <TouchableOpacity onPress={handlePress2}>
+            {!showNewView2 ? (
+                <View className=" bg-loaknow-yellow rounded-[50px] w-40 h-40 flex items-center justify-center">
+                <Image className="" source={require('../assets/images/manage-product.png')} style={{width:80, height:80}}/>
+                <Text className="text-base font-semibold">Manage Product</Text>
+              </View>
+              ) : (
+                <View className=" rounded-[50px] w-40 h-40 flex items-center justify-center bg-loaknow-blue">
+                <Image className="" source={require('../assets/images/manage-product-pressed.png')} style={{width:80, height:80}}/>
+                <Text className="text-base font-semibold text-loaknow-yellow">Manage Product</Text>
+              </View>
+              )}
+
+              
+            </TouchableOpacity>
+        
+            </View>
+        </TouchableWithoutFeedback>
+
+    
+        
       </Modal>
     </View>
   );
@@ -87,10 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   modalContent: {
     backgroundColor: 'white',
@@ -98,6 +146,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 5,
   },
+  positionBar: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },  
 });
 
 export default BottomNav;
