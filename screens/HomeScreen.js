@@ -6,10 +6,12 @@ const HomeScreen = ({ navigation }) => {
 
   const auth = getAuth();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState({});
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsAuthenticated(true);
+        setUser(user);
       } else {
         setIsAuthenticated(false);
       }
@@ -22,6 +24,7 @@ const HomeScreen = ({ navigation }) => {
   const handleLogout = () => {
     signOut(auth).then(() => {
       console.log('Logout success');
+      console.log('User', user);
     }).catch((error) => {
       console.log('Logout error', error);
     });
@@ -47,6 +50,9 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <View style={styles.buttonContainer}>
             <Button title='Go to Profile' onPress={()=>navigation.navigate('Profile')} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to FCM' onPress={()=>navigation.navigate('FCM')} />
           </View>
         </>
       )}

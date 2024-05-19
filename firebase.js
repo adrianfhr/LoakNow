@@ -1,13 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getMessaging } from "firebase/messaging";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDZsCOVdC_ssB72iA5acNqRSB4y-z-_o_Y",
   authDomain: "ppam-loaknow-f6d20.firebaseapp.com",
@@ -20,9 +18,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
+const firestore = getFirestore(app);  // Tambahkan inisialisasi Firestore
+const messaging = getMessaging(app);  // Tambahkan inisialisasi Firebase Cloud Messaging
 
-export default { app, auth}
+export { app, auth, firestore, messaging };

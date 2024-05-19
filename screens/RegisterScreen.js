@@ -2,9 +2,9 @@ import { View } from "react-native";
 import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "react-native";
-
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { firestore } from "../firebase";
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -52,31 +52,76 @@ const RegisterScreen = ({ navigation }) => {
 
     }
 
-    const handleRegister = ()=>{
-        const findErrors = validate();
+    // const handleRegister = ()=>{
+    //     const findErrors = validate();
 
-        if(Object.values(findErrors).some(value=> value !== "")){
-            console.log(findErrors)
-            setErrors(findErrors)
-        }else{
-            createUserWithEmailAndPassword(auth,email,password).then(res=>{
-                console.log("login success",res)
-                navigation.navigate('Home');
-            }).catch((error)=>{
-                console.log("error",error)
-                let newErrors = {
-                    email: "",
-                    password:""
-                }
-                if(error.code === "auth/invalid-credential"){
-                    newErrors.email = "Invalid Email";
-                }else if(error.code === "auth/email-already-in-use"){
-                    newErrors.email = "Email already in use";
-                }
-                setErrors(newErrors)
-            })
+    //     if(Object.values(findErrors).some(value=> value !== "")){
+    //         console.log(findErrors)
+    //         setErrors(findErrors)
+    //     }else{
+    //         createUserWithEmailAndPassword(auth,email,password).then(res=>{
+    //             console.log("login success",res)
+    //             navigation.navigate('Home');
+    //         }).catch((error)=>{
+    //             console.log("error",error)
+    //             let newErrors = {
+    //                 email: "",
+    //                 password:""
+    //             }
+    //             if(error.code === "auth/invalid-credential"){
+    //                 newErrors.email = "Invalid Email";
+    //             }else if(error.code === "auth/email-already-in-use"){
+    //                 newErrors.email = "Email already in use";
+    //             }
+    //             setErrors(newErrors)
+    //         })
+    //     }
+    // }
+    const handleRegister = async () => {
+        const findErrors = validate();
+    
+        if (Object.values(findErrors).some(value => value !== "")) {
+          console.log(findErrors);
+          setErrors(findErrors);
+          return; // Keluar dari fungsi jika validasi gagal
         }
-    }
+    
+        try {
+          const { user } = await createUserWithEmailAndPassword(auth, email, password);
+          console.log("Registrasi berhasil:", user);
+    
+          // Buat dokumen pengguna baru dalam koleksi Firestore
+          const userRef = doc(firestore, 'users', user.uid);
+          await setDoc(userRef, {
+            name: fullName,
+            email: email,
+            address: '',
+            phone: '',
+            orders: [],
+            created_at: serverTimestamp(),
+            updated_at: serverTimestamp(),
+          });
+    
+          // Navigasi ke halaman Home atau halaman lain
+          // navigation.navigate('Home');
+        } catch (error) {
+          console.error("Kesalahan registrasi:", error);
+          let newErrors = {
+            email: "",
+            password: "",
+          };
+    
+          if (error.code === "auth/invalid-credential") {
+            newErrors.email = "Email tidak valid";
+          } else if (error.code === "auth/email-already-in-use") {
+            newErrors.email = "Email sudah digunakan";
+          }
+    
+          setErrors(newErrors);
+        }
+      };
+    
+      
     return(
         <View className="bg-loaknow-blue w-screen h-full flex-col-reverse overflow-scroll">
             <View className="absolute left-2 top-10">
