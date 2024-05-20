@@ -40,6 +40,18 @@ const HomeScreen = ({ navigation }) => {
             <Button title='Go to Landing' onPress={()=>navigation.navigate('Landing')} />
           </View>
           <View style={styles.buttonContainer}>
+            <Button title='Go to Cart' onPress={()=>navigation.navigate('Cart')} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to SellProduct' onPress={()=>navigation.navigate('SellProduct')} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to Request Product' onPress={()=>navigation.navigate('RequestProduct')} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title='Go to Manage Product' onPress={()=>navigation.navigate('ManageProduct')} />
+          </View>
+          <View style={styles.buttonContainer}>
             <Button title='Go to Profile' onPress={()=>navigation.navigate('Profile')} />
           </View>
           <View style={styles.buttonContainer}>
