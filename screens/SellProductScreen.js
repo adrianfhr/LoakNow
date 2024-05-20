@@ -1,12 +1,7 @@
 import { ScrollView,TouchableOpacity,View } from "react-native";
-import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
-import Searchingbar from "../components/SearchBar";
-import { Image } from "react-native";
-import BottomNav from "../components/BottomNav";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Image, Text } from "react-native";
 import { StyleSheet } from "react-native";
-import ModalProduct from "../components/Modal";
 
 
 const SellProductScreen = ({ navigation }) => {
