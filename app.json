@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "loaknow",
+    "name": "LoakNow",
     "slug": "loaknow",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,12 +18,18 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.adrianfhr.loaknow"
     },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics"
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },

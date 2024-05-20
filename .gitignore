@@ -33,3 +33,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# firebase
+google-services.json
+ppam-loaknow-f6d20-firebase-adminsdk-jdv81-16eb7e9108.json
