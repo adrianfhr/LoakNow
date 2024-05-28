@@ -26,9 +26,12 @@
       "package": "com.adrianfhr.loaknow"
     },
     "plugins": [
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth",
-      "@react-native-firebase/crashlytics"
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
     ],
     "web": {
       "favicon": "./assets/favicon.png"

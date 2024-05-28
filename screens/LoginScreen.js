@@ -1,10 +1,10 @@
 import { View, StyleSheet, Image} from "react-native";
 import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
-import auth from '@react-native-firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginScreen = ({ navigation }) => {
-
+    const auth = getAuth();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [errors,setErrors] = useState({
@@ -40,10 +40,9 @@ const LoginScreen = ({ navigation }) => {
             console.log(findErrors)
             setErrors(findErrors)
         }else{
-            auth()
-                .signInWithEmailAndPassword(email, password)
+            signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    console.log('User account created & signed in!');
+                    console.log('Signed in!');
                     navigation.navigate('Home')
                 })
                 .catch(error => {
