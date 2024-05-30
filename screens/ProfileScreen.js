@@ -1,24 +1,61 @@
-// MAKE A PROFILE SCREEN
-
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, Button } from 'react-native-paper';
-import {getAuth, signOut} from 'firebase/auth'
+import { Text, ProgressBar } from 'react-native-paper';
+import {getAuth, signOut, onAuthStateChanged} from 'firebase/auth'
 import BottomNav from "../components/BottomNav";
-
+import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
+import { app } from '../firebase'
 
 const ProfileScreen = ({ navigation }) => {
+
     const auth = getAuth();
-    const user = auth.currentUser;
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                navigation.navigate('Login');
+            } else {
+                const db = getFirestore(app);
+                const q = query(collection(db, "users"), where("uid", "==", `${user.uid}`));
+                try {
+                    // console.log("q : ", q)
+                    // const querySnapshot = await getDocs(q);
+                    // console.log("querySnapShot : ", q)
+                    // querySnapshot.forEach((doc) => {
+                    //   // doc.data() is never undefined for query doc snapshots
+                    //   console.log(doc.id, " => ", doc.data());
+                    //   setUserData(doc.data());
+                    // });
+                } catch (error) {
+                    console.log('Error getting documents: ', error);
+                }
+            }
+        });
+        return unsubscribe;
+    }, [auth, navigation]);
+
     const handleLogout = () => {
         signOut(auth).then(() => {
-          console.log('Logout success');
-          navigation.navigate('Login')
+            console.log('Logout success');
+            navigation.navigate('Login');
         }).catch((error) => {
-          console.log('Logout error', error);
+            console.log('Logout error', error);
         });
-      }
+    };
+
+    if (!userData) {
+        return (
+            <View className="h-full justify-center items-center bg-red-50">
+                <View>
+                    <Text className='text-loaknow-blue'>Loak Now</Text>
+                </View>   
+                    <ProgressBar className='mx-4 w-1/2 ' progress={0.1} theme={{ colors: { primary: '#1B75BB' } }} />
+            </View>
+        );
+    }
+
     return (
             <View className="flex-1 bg-loaknow-yellow pt-10">
                 <View className="mx-7">
@@ -38,9 +75,9 @@ const ProfileScreen = ({ navigation }) => {
                         <Image className='mx-auto my-auto' source={require('../assets/images/logo-profile.png')} style={{width: 100, height: 100, alignSelf: 'center'}}/>
                     </View>
                     <View className="translate-y-[-84px]">
-                        <Text className="text-2xl font-bold  text-center">Fariz Putra</Text>
+                        <Text className="text-2xl font-bold  text-center">{userData ? userData.fullName : 'Your Name'}</Text>
                         <Text className="text-[#656565] text-lg text-center mb-2" > 
-                            {user ? user.email : 'Your Email'}
+                            {userData ? userData.email : 'Your Email'}
                         </Text>
                         <View className="flex flex-col justify-center item-center px-8">
                         <TouchableOpacity 

@@ -4,9 +4,9 @@ import {app, analytics, auth} from '../firebase';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
-const DebugScreen = () => {
+const DebugScreen = ({navigation}) => {
   // // Set an initializing state whilst Firebase connects
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const [initializing, setInitializing] = useState(true);
   const [userAcc, setUserAcc] = useState();
 

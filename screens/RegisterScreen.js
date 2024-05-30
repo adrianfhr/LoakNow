@@ -70,10 +70,11 @@ const RegisterScreen = ({ navigation }) => {
                     phone: '',
                     orders: [],
                     created_at: serverTimestamp(),
-                    updated_at: serverTimestamp()
+                    updated_at: serverTimestamp(),
+                    uid: res.user.uid
                 });
                 console.log("Document written with ID: ", userDocRef.id);
-                navigation.navigate('Home');
+                navigation.navigate('Bottom', { screen: 'Home' })
                 // navigation.navigate('Home');
             } catch (error) {
                 console.log("error", error);
@@ -158,7 +159,7 @@ const RegisterScreen = ({ navigation }) => {
                 <Button mode="contained" onPress={handleRegister} className="bg-loaknow-blue rounded-full">
                     <Text className="text-lg text-loaknow-yellow">Sign Up</Text>
                 </Button>
-                <Text className="text-center mt-4">Already have an account? <Text onPress={()=>navigation.navigate('Login')} className="text-loaknow-blue">Login</Text></Text>
+                <Text className="text-center mt-4">Already have an account? <Text onPress={()=> navigation.navigate('Login')} className="text-loaknow-blue">Login</Text></Text>
             </View>
         <View className="mb-[-38] z-[-1]">
             <Image source={require('../assets/images/register.png')} style={{width: 180, height: 180, alignSelf: 'center'}}/>

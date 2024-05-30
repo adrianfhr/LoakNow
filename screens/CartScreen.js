@@ -6,15 +6,17 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 
 
 const CartScreen = ({ navigation }) => {
+
     const auth = getAuth();
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-          if (!user) {
-            navigation.navigate('Login');
-          }
+            if (!user) {
+                navigation.navigate('Login');
+            }
         });
         return unsubscribe;
-      });
+    }, [auth, navigation]);
+
     const [quantity, setQuantity] = useState(1);
     const [isChecked, setIsChecked] = useState(false);
 
