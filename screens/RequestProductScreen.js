@@ -25,28 +25,26 @@ const RequestProductScreen = ({ navigation }) => {
     value.image = image;
     const response = await fetch(image);
     const blobFile = await response.blob()
+    console.log(image)
     // 'file' comes from the Blob or File APIconst storage = getStorage();
     const storageRef = ref(storage, "requestProduct/" + Date.now() + ".jpg");
     uploadBytes(storageRef, blobFile).then((snapshot) => {
-    console.log('Uploaded a blob or file!');
-    }).then((resp)=> {
-        getDownloadURL(storageRef).then(async(downloadUrl)=>{
-            console.log(downloadUrl);
-            value.image=downloadUrl;
-            value.uid=user.uid;
-            try{
-
-              const docRef = await addDoc(collection(db, "orders_loaknow"), value)
-              if(docRef){
-                console.log("sukses");
+      console.log('Uploaded a blob or file!');
+      }).then((resp)=> {
+          getDownloadURL(storageRef).then(async(downloadUrl)=>{
+              console.log(downloadUrl);
+              value.image=downloadUrl;
+              value.uid=user.uid;
+              try{
+                const docRef = await addDoc(collection(db, "orders_loaknow"), value)
+                if(docRef){
+                  console.log("sukses");
+                }
+              } catch (error){
+                console.log(error)
               }
-            } catch (error){
-              console.log(error)
-            }
-            // console.log( userDocRef);
-            
-          })
-    });
+            })
+      });
   };
 
   const pickImage = async () => {
@@ -99,18 +97,15 @@ const RequestProductScreen = ({ navigation }) => {
                 errors.stock = "Stock must be greater than 0";
                 ToastAndroid.show('Stock must be greater than 0', ToastAndroid.SHORT);
               }
-              if (values.condition < 0 || values.condition > 10) {
+              if (values.condition < 0 || values.condition > 100) {
                 errors.condition = "Condition must be between 0 and 10";
                 ToastAndroid.show('Condition must be between 0 and 10', ToastAndroid.SHORT);
               }
-              if (!values.image) {
+              if (!image) {
                 errors.image = "Image must be there";
                 ToastAndroid.show('Image must be there', ToastAndroid.SHORT);
               }
-              if (!values.uid) {
-                errors.uid = "UID must be there";
-                ToastAndroid.show('UID must be there', ToastAndroid.SHORT);
-              }
+              
               return errors;
             }}
           >
