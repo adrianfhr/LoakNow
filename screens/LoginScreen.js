@@ -43,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     console.log('Signed in!');
-                    navigation.navigate('Home')
+                    navigation.navigate('Bottom', { screen: 'Home' })
                 })
                 .catch(error => {
                     if (error.code === 'auth/email-already-in-use') {

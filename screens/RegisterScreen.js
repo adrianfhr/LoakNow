@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -91,7 +91,7 @@ const RegisterScreen = ({ navigation }) => {
         }
     };
     return(
-        <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse">
+        <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse overflow-scroll">
             <View className=" h-4/5 bg-white rounded-t-3xl p-4">
                 <View className="mt-4">
                     <Title className="text-3xl font-bold text-[poppins]">Sign Up</Title>
@@ -160,6 +160,9 @@ const RegisterScreen = ({ navigation }) => {
                 </Button>
                 <Text className="text-center mt-4">Already have an account? <Text onPress={()=>navigation.navigate('Login')} className="text-loaknow-blue">Login</Text></Text>
             </View>
+        <View className="mb-[-38] z-[-1]">
+            <Image source={require('../assets/images/register.png')} style={{width: 180, height: 180, alignSelf: 'center'}}/>
+        </View>
         </View>
     );
 }

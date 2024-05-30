@@ -11,23 +11,27 @@ const SellProductScreen = ({ navigation }) => {
         
         const handlePress1 = () => {
             setShowNewView1(!showNewView1);
+            navigation.navigate("RequestProduct")
              
         };
         
         const handlePress2 = () => {
             setShowNewView2(!showNewView2);
+            navigation.navigate("ManageProduct")
         };
 
         
         return (
-            <View className="flex-1 bg-white">
+            <View className="flex-1 bg-white pt-10">
                 <View className=" flex-1 mx-7">
-                    <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 mt-3">
-                        <View className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
+                <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 my-3">
+                        <TouchableOpacity onPress={()=>{
+                            navigation.goBack()
+                        }} className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
                             <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
-                        </View>
+                        </TouchableOpacity>
                         <View className=" ml-3 justify-center items-center">
-                            <Text className=" font-semibold text-xl  ">Sell Product</Text>
+                            <Text className=" font-semibold text-xl  "> Sell Product </Text>
                         </View>
                     </View>
                     <View className="absolute top-0 left-0 right-0 bottom-0 items-center justify-center">

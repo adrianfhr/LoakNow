@@ -62,37 +62,69 @@ const RequestProductScreen = ({ navigation }) => {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-white pt-10">
       <View className="mx-7">
-        <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 mt-3">
-          <View className="bg-loaknow-gray/20 rounded-full flex items-center justify-center p-2">
-            <Image className="" source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
-          </View>
-          <View className="ml-3 justify-center items-center">
-            <Text className="font-semibold text-xl">Request Product</Text>
-          </View>
-        </View>
-        <Formik 
-          initialValues={{ name: '', details: '', categories: '', prices: '', stock: 0, condition: 0, dangerous: true, image: '' , uid:''}}
-          onSubmit={value => handlePress(value)}
-          validate={(values) => {
-            const errors = {};
-            if (!values.name) {
-              errors.name = "Name must be there";
-              ToastAndroid.show('Name must be there', ToastAndroid.SHORT);
-            }
-            return errors;
-          }}
-        >
+      <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 my-3">
+                        <TouchableOpacity onPress={()=>{
+                            navigation.goBack()
+                        }} className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
+                            <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
+                        </TouchableOpacity>
+                        <View className=" ml-3 justify-center items-center">
+                            <Text className=" font-semibold text-xl  "> Request Product </Text>
+                        </View>
+                    </View>
+          <Formik 
+            initialValues={{ name: '', details: '', categories: '', prices: '', stock: 0, condition: 0, dangerous: true, image: '', uid: '' }}
+            onSubmit={value => handlePress(value)}
+            validate={(values) => {
+              const errors = {};
+              if (!values.name) {
+                errors.name = "Name must be there";
+                ToastAndroid.show('Name must be there', ToastAndroid.SHORT);
+              }
+              if (!values.details) {
+                errors.details = "Details must be there";
+                ToastAndroid.show('Details must be there', ToastAndroid.SHORT);
+              }
+              if (!values.categories) {
+                errors.categories = "Categories must be there";
+                ToastAndroid.show('Categories must be there', ToastAndroid.SHORT);
+              }
+              if (!values.prices) {
+                errors.prices = "Prices must be there";
+                ToastAndroid.show('Prices must be there', ToastAndroid.SHORT);
+              }
+              if (values.stock <= 0) {
+                errors.stock = "Stock must be greater than 0";
+                ToastAndroid.show('Stock must be greater than 0', ToastAndroid.SHORT);
+              }
+              if (values.condition < 0 || values.condition > 10) {
+                errors.condition = "Condition must be between 0 and 10";
+                ToastAndroid.show('Condition must be between 0 and 10', ToastAndroid.SHORT);
+              }
+              if (!values.image) {
+                errors.image = "Image must be there";
+                ToastAndroid.show('Image must be there', ToastAndroid.SHORT);
+              }
+              if (!values.uid) {
+                errors.uid = "UID must be there";
+                ToastAndroid.show('UID must be there', ToastAndroid.SHORT);
+              }
+              return errors;
+            }}
+          >
           {({ handleChange,  handleSubmit, values }) => (
             <View>
               <Text className="font-semibold text-base my-3">Product Picture & Video *</Text>
               <View className="flex flex-row mb-3">
                 <TouchableOpacity onPress={pickImage}>
                   {image ?
-                    <Image className="mr-2" source={{ uri: image }} style={{ width: 90, height: 90 }} /> 
+                    <Image className="mx-2" source={{ uri: image }} style={{ width: 90, height: 90 }} /> 
                     :
-                    <Image className="mr-2" source={require('../assets/images/product-image.png')} style={{ width: 90, height: 90 }} />
+                    <View className='border-2 border-slate-300 rounded-lg'>
+                      <Image className="mx-2 " source={require('../assets/images/image-placeholder.png')} style={{ width: 90, height: 90 }} />
+                    </View>
                   }
                 </TouchableOpacity>
               </View>
@@ -197,7 +229,7 @@ const RequestProductScreen = ({ navigation }) => {
           <TouchableWithoutFeedback onPress={() => {
               hideModal();
               handlePress();
-              navigation.navigate("Landing")
+              navigation.navigate("Home")
             }}
           >
             <View className="flex-1 items-center justify-center bg-white/90">

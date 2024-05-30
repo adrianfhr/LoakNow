@@ -1,9 +1,20 @@
-import { ScrollView, View, Image, Text, TouchableHighlight, TouchableOpacity, StyleSheet } from "react-native";
-import { useState } from "react";
+import { ScrollView, View, Image, Text, TouchableHighlight, TouchableOpacity, StyleSheet, TouchableOpacityBase } from "react-native";
+import { useState, useEffect } from "react";
 import BottomNav from "../components/BottomNav";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+
 
 const CartScreen = ({ navigation }) => {
+    const auth = getAuth();
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (!user) {
+            navigation.navigate('Login');
+          }
+        });
+        return unsubscribe;
+      });
     const [quantity, setQuantity] = useState(1);
     const [isChecked, setIsChecked] = useState(false);
 
@@ -17,19 +28,25 @@ const CartScreen = ({ navigation }) => {
         }
     };
 
+
     const toggleCheck = () => {
         setIsChecked(!isChecked);
     };
 
     return (
-        <View className="flex-1 bg-white">
-            <ScrollView className="mb-[60px]">
+        <View className="flex-1 bg-white ">
+            <ScrollView className="mb-[60px] pt-10">
                 <View className="mx-7">
-                    <View className="flex flex-row items-center my-2 border-b-[1px] border-b-loaknow-gray">
-                        <Text className="rotate-180 font-semibold text-3xl mr-10">&gt;</Text>
-                        <Text className="text-xl font-bold">Cart</Text>
+                <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-3 my-3">
+                        <TouchableOpacity onPress={()=>{
+                            navigation.goBack()
+                        }} className=" bg-loaknow-gray/20 rounded-full  flex items-center justify-center p-2">
+                            <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
+                        </TouchableOpacity>
+                        <View className=" ml-3 justify-center items-center">
+                            <Text className=" font-semibold text-xl  "> Cart </Text>
+                        </View>
                     </View>
-
                     <View className="border-loaknow-gray border-[1px] rounded-lg p-2">
                         <View className="flex flex-row items-center">
                             <TouchableOpacity onPress={toggleCheck}>
@@ -97,14 +114,9 @@ const CartScreen = ({ navigation }) => {
                         <Text className="text-white font-semibold">Checkout</Text>
                     </View>
                 </View>
-                <BottomNav />
             </View>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    // Tambahkan style yang diperlukan
-});
 
 export default CartScreen;

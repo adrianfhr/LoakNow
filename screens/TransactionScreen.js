@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from '@react-navigation/native';
 
-const ManageProductScreen = () => {
+const TransactionScreen = () => {
         const navigation = useNavigation();
         return (
             <View className="flex-1 bg-white pt-10">
@@ -17,15 +17,15 @@ const ManageProductScreen = () => {
                             <Image className=" " source={require('../assets/images/arrow.png')} style={{ width: 15, height: 15 }} />
                         </TouchableOpacity>
                         <View className=" ml-3 justify-center items-center">
-                            <Text className=" font-semibold text-xl  "> Manage Product </Text>
+                            <Text className=" font-semibold text-xl  "> Transaction </Text>
                         </View>
                     </View>
                     <View className="flex flex-row border-b-2 border-loaknow-bg/20 justify-between items-center px-16 my-2 mb-5">
                         <View className=" border-b-2 border-loaknow-blue mb-[-2px]">
-                            <Text className="font-semibold text-base">On Process</Text>
+                            <Text className="font-semibold text-base">Marketplace</Text>
                         </View>
                         <View>
-                            <Text className="font-semibold text-base">Completed</Text>
+                            <Text className="font-semibold text-base">Loak Now</Text>
                         </View>
                     </View>
 
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ManageProductScreen;
+export default TransactionScreen;
