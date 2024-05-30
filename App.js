@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Button, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, StyleSheet, Image  } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -15,7 +15,9 @@ import ProfileScreen from './screens/ProfileScreen';
 import TransactionScreen from './screens/TransactionScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-paper';
-
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
+import { app } from './firebase'
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -54,7 +56,7 @@ const ModalButtonComponent = () => {
                 <Text className="text-base font-semibold">Manage Product</Text>
               </View> 
             </TouchableOpacity>
-        
+
             </View>
         </TouchableWithoutFeedback>
         
@@ -63,7 +65,51 @@ const ModalButtonComponent = () => {
   );
 };
 
+const useUserData = (auth) => {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.log("unauthenticated");
+        setLoading(false);
+      } else {
+        const db = getFirestore(app);
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        try {
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            setUserData(doc.data());
+          });
+          setLoading(false);
+        } catch (error) {
+          console.log('Error getting documents: ', error);
+          setLoading(false);
+        }
+      }
+    });
+    return unsubscribe;
+  }, [auth]);
+
+  return { userData, loading };
+};
+
 const BottomNavigation = () => {
+
+  const auth = getAuth();
+  const { userData, loading } = useUserData(auth);
+
+  if (loading) {
+    return (
+      <View className="h-full justify-center items-center ">
+              <View>
+                  <Text className='text-loaknow-blue text-2xl'>Loading. . . .</Text>
+                </View>   
+        </View>
+    );
+  }
+
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} options={{ 
@@ -80,26 +126,31 @@ const BottomNavigation = () => {
           <Icon source="cart-outline" color={color} size={size} />
         ), 
       }} />
-      <Tab.Screen 
-        name="Loak Now" 
-        component={View} 
-        options={{ 
-          // tabBarIcon: ({ color, size }) => (
-          //   <Icon source="account-outline" color={color} size={size} />
-          // ), 
-          tabBarIcon: (props) => (
-            <ModalButtonComponent {...props} />
+      <Tab.Screen
+        name="Loak Now"
+        component={SellProductScreen}
+        options={{
+          animationEnabled: false,
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => (
+            <Image
+              source={focused 
+                ? require('./assets/images/loaknow-navbar-focused.png')
+                : require('./assets/images/loaknow-navbar.png')
+              }
+              style={{ width: size, height: size }}
+            />
           ),
-        }} 
+        }}
       />
-      <Tab.Screen name="Transaction" component={TransactionScreen} options={{ 
+      <Tab.Screen name="Transaction" component={TransactionScreen} initialParams={{ userData: userData }} options={{ 
         animationEnabled: false, 
         headerShown: false, 
         tabBarIcon: ({ color, size }) => (
           <Icon source="file-document-outline" color={color} size={size} />
         ), 
       }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ 
+      <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{ userData: userData }} options={{ 
         animationEnabled: false, 
         headerShown: false, 
         tabBarIcon: ({ color, size }) => (
@@ -114,11 +165,11 @@ const BottomNavigation = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Debug">
-        <Stack.Screen name="Debug" component={DebugScreen} />
+      <Stack.Navigator initialRouteName="Login">
+        {/* <Stack.Screen name="Debug" component={DebugScreen} initialParams={{ userData: userData }} /> */}
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="SellProduct" component={SellProductScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="SellProduct" component={SellProductScreen} options={{ headerShown: false }} /> */}
         <Stack.Screen name="RequestProduct" component={RequestProductScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ManageProduct" component={ManageProductScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Bottom" component={BottomNavigation} options={{ headerShown: false }} />
@@ -131,6 +182,8 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bottomNavBar: {
     height: 90,
@@ -138,7 +191,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   modalContainer: {
-
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
   },
   modalContent: {
@@ -152,7 +204,7 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-  },  
+  },
 });
 
 export default App;

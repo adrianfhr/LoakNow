@@ -2,31 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import {app, analytics, auth} from '../firebase';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const DebugScreen = ({navigation}) => {
+const DebugScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const userData = route.params?.userData;
+  console.log("user: ". userData)
   // // Set an initializing state whilst Firebase connects
   // const navigation = useNavigation();
-  const [initializing, setInitializing] = useState(true);
-  const [userAcc, setUserAcc] = useState();
+  // const [initializing, setInitializing] = useState(true);
+  // const [userAcc, setUserAcc] = useState();
 
-  // // Handle user state changes
-  const auth = getAuth();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // // // Handle user state changes
+  // const auth = getAuth();
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsAuthenticated(true);
-        setUserAcc(user);
-      } else {
-        setIsAuthenticated(false);
-      }
-    });
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       setIsAuthenticated(true);
+  //       setUserAcc(user);
+  //     } else {
+  //       setIsAuthenticated(false);
+  //     }
+  //   });
 
-    return unsubscribe;
+  //   return unsubscribe;
     
-  }, []);
+  // }, []);
 
   const handleLogout = () => {
     signOut(auth).then(() => {
@@ -36,7 +40,9 @@ const DebugScreen = ({navigation}) => {
     });
   }
 
-  if(!isAuthenticated){
+  console.log("userdata :", userData)
+
+  if(!userData){
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Home Screen</Text>
@@ -71,7 +77,7 @@ const DebugScreen = ({navigation}) => {
     );
   }
   
-  console.log(userAcc)
+  // console.log(userAcc)
   
   return (
     <View style={styles.container}>
@@ -99,7 +105,7 @@ const DebugScreen = ({navigation}) => {
             <Button title='Go to Manage Product' onPress={()=>navigation.navigate('ManageProduct')} />
           </View>
           <View style={styles.buttonContainer}>
-            <Button title='Go to Profile' onPress={()=>navigation.navigate('Profile')} />
+            <Button title='Go to Profile' onPress={()=>navigation.navigate('Bottom', { screen: 'Profile' })} />
           </View>
           <View style={styles.buttonContainer}>
             <Button title='Go to FCM' onPress={()=>navigation.navigate('FCM')} />

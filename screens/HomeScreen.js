@@ -4,6 +4,7 @@ import Searchingbar from "../components/SearchBar";
 import { Image } from "react-native";
 import BottomNav from "../components/BottomNav";
 import { StyleSheet } from "react-native";
+import {Icon} from "react-native-paper";
 
 
 
@@ -13,14 +14,12 @@ const HomeScreen = ({ navigation }) => {
                 <ScrollView className="">
                     <View className="mx-7">
                         <View className="flex flex-row items-center my-2">
-                            <View className="rounded-full bg-loaknow-bg/20 p-1.5 mr-2">
+                            {/* <View className="rounded-full bg-loaknow-bg/20 p-1.5 mr-2">
                                 <Image className=""source={require('../assets/images/burger.png')} style={{width:30, height:30}}/>
-                            </View>
-                            <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row ">
-                                <Text className="font-semibold text-base mr-2" onPress={() => navigation.navigate('Cart')}>Jatinangor, West Java </Text>
-                                <View className="flex justify-center items-center">
-                                    <Text className="rotate-90 text-loaknow-blue font-semibold text-xs">&gt;</Text>
-                                </View>
+                            </View> */}
+                            <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row w-full justify-center">
+                                <Icon source="map-marker-outline" size={25}/>
+                                <Text className="font-semibold text-base mr-2">Jatinangor, West Java </Text>
                             </View>
                         </View>
                         <Searchingbar/>

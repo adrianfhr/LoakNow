@@ -1,7 +1,7 @@
-import { View, Image } from "react-native";
-import { TextInput, Button, Title, HelperText, Text } from 'react-native-paper';
-import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { View, Image ,TextInput, ToastAndroid} from "react-native";
+import {  Button, Title, HelperText, Text, IconButton } from 'react-native-paper';
+import { useState, useEffect } from "react";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { collection, getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { app } from '../firebase'
 const RegisterScreen = ({ navigation }) => {
@@ -16,8 +16,25 @@ const RegisterScreen = ({ navigation }) => {
         password:"",
         repeatPassword:""
     })
+    const [isLoading, setIsLoading] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+
     const auth = getAuth();
-    // const db = getFirestore();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                navigation.replace('Bottom', { screen: 'Home' })
+                setIsLoading(false)
+            }else{
+                setIsLoading(false)
+            }
+        });
+        return unsubscribe;
+    }, [auth, navigation]);
+
+
     const validate = ()=>{
 
         let newErrors = {
@@ -74,23 +91,33 @@ const RegisterScreen = ({ navigation }) => {
                     uid: res.user.uid
                 });
                 console.log("Document written with ID: ", userDocRef.id);
-                navigation.navigate('Bottom', { screen: 'Home' })
-                // navigation.navigate('Home');
+                navigation.replace('Bottom', { screen: 'Home' })
             } catch (error) {
-                console.log("error", error);
+                console.log("error", error.code);
+                console.log("error code: ", error.code)
                 let newErrors = {
                     email: "",
                     password: ""
                 };
-                if (error.code === "auth/invalid-credential") {
-                    newErrors.email = "Invalid Email";
+                if (error.code === "auth/invalid-email") {
+                   ToastAndroid.show('Invalid Format Email', ToastAndroid.SHORT);
                 } else if (error.code === "auth/email-already-in-use") {
-                    newErrors.email = "Email already in use";
+                    ToastAndroid.show('Email Already in Use', ToastAndroid.SHORT);
                 }
-                setErrors(newErrors);
             }
         }
     };
+
+    if(isLoading){
+        return(
+            <View className="h-full justify-center items-center ">
+                <View>
+                    <Text className='text-loaknow-blue text-2xl'>Loading. . . .</Text>
+                </View>   
+            </View>
+        )
+    }
+
     return(
         <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse overflow-scroll">
             <View className=" h-4/5 bg-white rounded-t-3xl p-4">
@@ -99,11 +126,12 @@ const RegisterScreen = ({ navigation }) => {
                     <Text className="text-[#656565] text-lg mb-2" >Create an account</Text>
                     <Text className="mb-2" >Email</Text>
                     <TextInput 
-                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+                        className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
                         value={email}
                         mode="flat"
                         underlineColor="transparent"
                         activeUnderlineColor="transparent"
+                        placeholder="Enter your email"
                         onChangeText={(email)=>{
                             setEmail(email)
                             setErrors(errors=>({...errors, email: ""}))
@@ -113,11 +141,12 @@ const RegisterScreen = ({ navigation }) => {
                     <HelperText type="error" visible={errors.email !== ""}>{errors.email}</HelperText>
                     <Text className="mb-2" >Full Name</Text>
                     <TextInput
-                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+                        className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
                         value={fullName}
                         mode="flat"
                         underlineColor="transparent"
                         activeUnderlineColor="transparent"
+                        placeholder="Enter your full name"
                         onChangeText={(fullName)=>{
                             setFullName(fullName)
                             setErrors(errors=>({...errors, fullName: ""}))
@@ -126,40 +155,60 @@ const RegisterScreen = ({ navigation }) => {
                     />
                     <HelperText type="error" visible={errors.fullName !== ""}>{errors.fullName}</HelperText>
                     <Text className="mb-2" >Password</Text>
-                    <TextInput
-                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
-                        value={password}
-                        mode="flat"
-                        underlineColor="transparent"
-                        activeUnderlineColor="transparent"
-                        onChangeText={(password)=>{
-                            setPassword(password)
-                            setErrors(errors=>({...errors, password: ""}))
-                        }}
-                        error={errors.password !== ""}
-                        secureTextEntry
-                    />
+                    <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
+                        <TextInput
+                            className="w-10/12"
+                            value={password}
+                            mode="flat"
+                            underlineColor="transparent"
+                            activeUnderlineColor="transparent"
+                            placeholder="Enter your password"
+                            onChangeText={(password)=>{
+                                setPassword(password)
+                                setErrors(errors=>({...errors, password: ""}))
+                            }}
+                            error={errors.password !== ""}
+                            secureTextEntry={!showPassword}
+                            />
+                        <IconButton
+                            className="ml-6"
+                            icon={showPassword ? 'eye' : 'eye-off'}
+                            size={20}
+                            iconColor="#1B75BB"
+                            onPress={() => setShowPassword(!showPassword)}
+                        />
+                    </View>
                     <HelperText type="error" visible={errors.password !== ""}>{errors.password}</HelperText>
                     <Text className="mb-2" >Repeat Password</Text>
-                    <TextInput
-                        className="px-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
-                        value={repeatPassword}
-                        mode="flat"
-                        underlineColor="transparent"
-                        activeUnderlineColor="transparent"
-                        onChangeText={(password)=>{
-                            setRepeatPassword(password)
-                            setErrors(errors=>({...errors, repeatPassword: ""}))
-                        }}
-                        error={errors.repeatPassword !== ""}
-                        secureTextEntry
-                    />
+                    <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
+                        <TextInput
+                            className="w-10/12"
+                            value={repeatPassword}
+                            mode="flat"
+                            underlineColor="transparent"
+                            activeUnderlineColor="transparent"
+                            placeholder="Enter your password again"
+                            onChangeText={(password)=>{
+                                setRepeatPassword(password)
+                                setErrors(errors=>({...errors, repeatPassword: ""}))
+                            }}
+                            error={errors.password !== ""}
+                            secureTextEntry={!showPasswordRepeat}
+                            />
+                        <IconButton
+                            className="ml-6"
+                            icon={showPasswordRepeat ? 'eye' : 'eye-off'}
+                            size={20}
+                            iconColor="#1B75BB"
+                            onPress={() => setShowPasswordRepeat(!showPasswordRepeat)}
+                        />
+                    </View>
                     <HelperText type="error" visible={errors.repeatPassword !== ""}>{errors.repeatPassword}</HelperText>
                 </View>
-                <Button mode="contained" onPress={handleRegister} className="bg-loaknow-blue rounded-full">
+                <Button mode="contained" onPress={handleRegister} className="bg-loaknow-blue rounded-full px-4 py-2">
                     <Text className="text-lg text-loaknow-yellow">Sign Up</Text>
                 </Button>
-                <Text className="text-center mt-4">Already have an account? <Text onPress={()=> navigation.navigate('Login')} className="text-loaknow-blue">Login</Text></Text>
+                <Text className="text-center mt-4">Already have an account? <Text onPress={()=> navigation.replace('Login')} className="text-loaknow-blue">Login</Text></Text>
             </View>
         <View className="mb-[-38] z-[-1]">
             <Image source={require('../assets/images/register.png')} style={{width: 180, height: 180, alignSelf: 'center'}}/>

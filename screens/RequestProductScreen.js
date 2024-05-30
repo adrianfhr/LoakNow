@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { getStorage, getDownloadURL, ref, uploadBytes} from "firebase/storage";
 import { getAuth } from 'firebase/auth'
 import { app } from "../firebase"
-import { setDoc, doc, getFirestore, addDoc, collection } from "firebase/firestore";
+import { setDoc, doc, getFirestore, addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const RequestProductScreen = ({ navigation }) => {
   const db = getFirestore(app);
@@ -35,10 +35,13 @@ const RequestProductScreen = ({ navigation }) => {
               console.log(downloadUrl);
               value.image=downloadUrl;
               value.uid=user.uid;
+              value.created_at=serverTimestamp();
+              value.update_at=serverTimestamp();
               try{
                 const docRef = await addDoc(collection(db, "orders_loaknow"), value)
                 if(docRef){
                   console.log("sukses");
+                  showModal();
                 }
               } catch (error){
                 console.log(error)
@@ -73,7 +76,7 @@ const RequestProductScreen = ({ navigation }) => {
                         </View>
                     </View>
           <Formik 
-            initialValues={{ name: '', details: '', categories: '', prices: '', stock: 0, condition: 0, dangerous: true, image: '', uid: '' }}
+            initialValues={{ name: '', details: '', categories: '', prices: '', stock: 0, condition: 0, dangerous: true, image: '', status:false, uid: '', created_at:null, updated_at:null }}
             onSubmit={value => handlePress(value)}
             validate={(values) => {
               const errors = {};

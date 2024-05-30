@@ -1,4 +1,4 @@
-import { ScrollView,TouchableOpacity,View } from "react-native";
+import { ScrollView,TouchableOpacity,View, ToastAndroid } from "react-native";
 import { useState } from "react";
 import { Image, Text } from "react-native";
 import { StyleSheet } from "react-native";
@@ -10,14 +10,14 @@ const SellProductScreen = ({ navigation }) => {
         
         
         const handlePress1 = () => {
-            setShowNewView1(!showNewView1);
+            // setShowNewView1(!showNewView1);
             navigation.navigate("RequestProduct")
              
         };
         
         const handlePress2 = () => {
-            setShowNewView2(!showNewView2);
-            navigation.navigate("ManageProduct")
+            // setShowNewView2(!showNewView2);
+            ToastAndroid.show('Marketplace is Coming Soon', ToastAndroid.SHORT)
         };
 
         

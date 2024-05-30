@@ -1,45 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, ToastAndroid } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, ProgressBar } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import {getAuth, signOut, onAuthStateChanged} from 'firebase/auth'
-import BottomNav from "../components/BottomNav";
-import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
-import { app } from '../firebase'
 
-const ProfileScreen = ({ navigation }) => {
 
+const ProfileScreen = ({ navigation, route }) => {
+    // const navigation = useNavigation();
+    // const route = useRoute();
+    const userData = route.params?.userData;
+    // console.log("user: ". userData)
     const auth = getAuth();
-    const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                navigation.navigate('Login');
-            } else {
-                const db = getFirestore(app);
-                const q = query(collection(db, "users"), where("uid", "==", `${user.uid}`));
-                try {
-                    // console.log("q : ", q)
-                    // const querySnapshot = await getDocs(q);
-                    // console.log("querySnapShot : ", q)
-                    // querySnapshot.forEach((doc) => {
-                    //   // doc.data() is never undefined for query doc snapshots
-                    //   console.log(doc.id, " => ", doc.data());
-                    //   setUserData(doc.data());
-                    // });
-                } catch (error) {
-                    console.log('Error getting documents: ', error);
-                }
-            }
-        });
-        return unsubscribe;
-    }, [auth, navigation]);
+        if (!userData) {
+            navigation.replace('Login');
+        }
+    }, [userData, navigation]);
 
     const handleLogout = () => {
         signOut(auth).then(() => {
             console.log('Logout success');
-            navigation.navigate('Login');
+            navigation.replace('Login');
         }).catch((error) => {
             console.log('Logout error', error);
         });
@@ -47,11 +29,10 @@ const ProfileScreen = ({ navigation }) => {
 
     if (!userData) {
         return (
-            <View className="h-full justify-center items-center bg-red-50">
+            <View className="h-full justify-center items-center ">
                 <View>
-                    <Text className='text-loaknow-blue'>Loak Now</Text>
+                    <Text className='text-loaknow-blue text-2xl'>Loading. . . .</Text>
                 </View>   
-                    <ProgressBar className='mx-4 w-1/2 ' progress={0.1} theme={{ colors: { primary: '#1B75BB' } }} />
             </View>
         );
     }
@@ -82,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
                         <View className="flex flex-col justify-center item-center px-8">
                         <TouchableOpacity 
                             onPress={() => {
-                                console.log("tap tap");
+                                ToastAndroid.show('Edit Profile is Coming Soon', ToastAndroid.SHORT);
                             }} 
                             className="w-full border-[1px] border-slate-200 rounded-md p-4 flex-row items-center mt-2"
                         >
@@ -92,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => {
-                                console.log("tap tap");
+                                ToastAndroid.show('History Transaction is Coming Soon', ToastAndroid.SHORT);
                             }} 
                             className="w-full border-[1px] border-slate-200 rounded-md p-4 flex-row items-center mt-2"
                         >
@@ -102,7 +83,8 @@ const ProfileScreen = ({ navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => {
-                                console.log("tap tap");
+                                ToastAndroid.show('Customer Support is Coming Soon', ToastAndroid.SHORT);
+
                             }} 
                             className="w-full border-[1px] border-slate-200 rounded-md p-4 flex-row items-center mt-2"
                         >
@@ -112,7 +94,7 @@ const ProfileScreen = ({ navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             onPress={() => {
-                                console.log("tap tap");
+                                ToastAndroid.show('Settings Coming Soon', ToastAndroid.SHORT);
                             }} 
                             className="w-full border-[1px] border-slate-200 rounded-md p-4 flex-row items-center mt-2"
                         >
