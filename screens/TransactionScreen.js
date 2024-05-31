@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Text } from 'react-native-paper';
-import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
+import { getFirestore, query, collection, where, getDocs, orderBy} from 'firebase/firestore';
 import { app } from '../firebase'; // pastikan path ini benar
 
 
@@ -18,7 +18,11 @@ const TransactionScreen = ({ navigation, route }) => {
             const fetchData = async () => {
                 if(userData){
                     const db = getFirestore(app);
-                    const q = query(collection(db, "orders_loaknow"), where("uid", "==", userData?.uid));
+                    const q = query(
+                        collection(db, 'orders_loaknow'),
+                        where('uid', '==', userData?.uid),
+                        orderBy('created_at', 'desc') // 'asc' for ascending order, 'desc' for descending
+                      );
                     console.log("Sedang query...")
                     try {
                         const querySnapshot = await getDocs(q);
@@ -35,7 +39,7 @@ const TransactionScreen = ({ navigation, route }) => {
                 }
             };
             fetchData();
-        }, [userData, navigation]);
+        }, [userData, navigation, transactionState]);
 
         console.log("Marketplace", transactionMarketplace)
         console.log("LoakNow", transactionLoakNow)
@@ -130,19 +134,23 @@ const TransactionScreen = ({ navigation, route }) => {
                             <Text className="font-semibold text-base">Loak Now</Text>
                         </TouchableOpacity>
                     </View>
-                    {transactionState === "Marketplace" ? (
-                    transactionMarketplace.length > 0 ? (
-                        transactionMarketplace.map(renderTransaction)
-                    ) : (
-                        <Text className="text-loaknow-gray text-center mt-4">You do not have any transactions in the marketplace</Text>
-                    )
-                ) : (
-                    transactionLoakNow.length > 0 ? (
-                        transactionLoakNow.map(renderTransaction)
-                    ) : (
-                        <Text className="text-loaknow-gray text-center mt-4">You do not have any transactions in Loak Now</Text>
-                    )
-                )}
+                    <ScrollView className="w-full" showsHorizontalScrollIndicator={false} >
+                        <View className="h-full pb-40">
+                            {transactionState === "Marketplace" ? (
+                            transactionMarketplace.length > 0 ? (
+                                transactionMarketplace.map(renderTransaction)
+                            ) : (
+                                <Text className="text-loaknow-gray text-center mt-4">You do not have any transactions in the marketplace</Text>
+                            )
+                        ) : (
+                            transactionLoakNow.length > 0 ? (
+                                transactionLoakNow.map(renderTransaction)
+                            ) : (
+                                <Text className="text-loaknow-gray text-center mt-4">You do not have any transactions in Loak Now</Text>
+                            )
+                        )}
+                        </View>
+                    </ScrollView>
                 </View>
             </View>
         );

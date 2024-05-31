@@ -91,6 +91,7 @@ const RegisterScreen = ({ navigation }) => {
                     uid: res.user.uid
                 });
                 console.log("Document written with ID: ", userDocRef.id);
+                ToastAndroid.show('Sign In Successfully', ToastAndroid.LONG);
                 navigation.replace('Bottom', { screen: 'Home' })
             } catch (error) {
                 console.log("error", error.code);
