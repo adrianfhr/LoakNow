@@ -9,6 +9,10 @@ import { useState } from "react";
 import { Image, Modal } from "react-native";
 import { StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { app } from "../firebase";
+import * as ImagePicker from "expo-image-picker";
+
 
 const StatusAdminScreen = ({ navigation, route }) => {
   const request = route.params?.request;
@@ -53,7 +57,28 @@ const StatusAdminScreen = ({ navigation, route }) => {
     const [date, setDate] = useState(new Date());
     const [accepted, setAccepted] = useState(false);
     const [purchased, setPurchased] = useState(false);
-  
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+    }
+
+    const hangleUpdate = async () => {
+      const db = getFirestore(app);
+      const docRef = doc(db, "orders_loaknow", request.id);
+      await updateDoc(docRef, {
+        purchased: purchased,
+        accepted: accepted,
+        date_viewed: date,
+        updated_at: serverTimestamp(),
+      });
+    };
+
     const handlePurchased = () => {
       setPurchased(true);
     };
@@ -195,9 +220,42 @@ const StatusAdminScreen = ({ navigation, route }) => {
             <Text className="text-loaknow-blue font-semibold mt-2">
               Has the payment been made?
             </Text>
+            {/* place holder image */}
+            <View className="flex flex-row my-3">
+                <TouchableOpacity onPress={pickImage}>
+                  {image ? (
+                    <Image
+                      className="mx-2"
+                      source={{ uri: image }}
+                      style={{ width: 90, height: 90 }}
+                    />
+                  ) : (
+                    <View className="border-2 border-slate-300 rounded-lg">
+                      <Image
+                        className="mx-2 "
+                        source={require("../assets/images/image-placeholder.png")}
+                        style={{ width: 90, height: 90 }}
+                      />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              </View>
           </View>
         </View>
       </View>
+      {/* UPDATE TOUCHABLE BUTTON */}
+      <TouchableOpacity
+        onPress={handlePress}
+        className="bg-loaknow-yellow rounded-lg py-3 flex-row items-center justify-between px-2 pr-4 mt-2 mx-7"
+      >
+        <Text className="text-loaknow-blue font-semibold text-base">
+          Update
+        </Text>
+        <Image
+          source={require("../assets/images/arrow.png")}
+          style={{ width: 20, height: 20, transform: [{ rotate: "180deg" }] }}
+        />
+      </TouchableOpacity>
     </View>
   );
   }
