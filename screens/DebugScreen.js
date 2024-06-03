@@ -1,115 +1,195 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import {app, analytics, auth} from '../firebase';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import { app, analytics, auth } from "../firebase";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const DebugScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const userData = route.params?.userData;
-  console.log("user: ". userData)
-  // // Set an initializing state whilst Firebase connects
-  // const navigation = useNavigation();
-  // const [initializing, setInitializing] = useState(true);
-  // const [userAcc, setUserAcc] = useState();
-
-  // // // Handle user state changes
-  // const auth = getAuth();
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       setIsAuthenticated(true);
-  //       setUserAcc(user);
-  //     } else {
-  //       setIsAuthenticated(false);
-  //     }
-  //   });
-
-  //   return unsubscribe;
-    
-  // }, []);
-
+  console.log("user: ".userData);
   const handleLogout = () => {
-    signOut(auth).then(() => {
-      console.log('Logout success');
-    }).catch((error) => {
-      console.log('Logout error', error);
-    });
-  }
+    signOut(auth)
+      .then(() => {
+        console.log("Logout success");
+      })
+      .catch((error) => {
+        console.log("Logout error", error);
+      });
+  };
 
-  console.log("userdata :", userData)
+  console.log("userdata :", userData);
 
-  if(!userData){
+  if (!userData) {
     return (
       <View style={styles.container}>
+        <Button title="Logout" onPress={handleLogout} />
         <Text style={styles.title}>Home Screen</Text>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Login' onPress={()=>navigation.navigate('Login')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Register' onPress={()=>navigation.navigate('Register')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Landing' onPress={()=>navigation.navigate('Bottom', { screen: 'Home' })} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Cart' onPress={()=>navigation.navigate('Bottom', { screen: 'Cart' })} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to SellProduct' onPress={()=>navigation.navigate('SellProduct')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Request Product' onPress={()=>navigation.navigate('RequestProduct')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Manage Product' onPress={()=>navigation.navigate('ManageProduct')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Profile' onPress={()=>navigation.navigate('Bottom', { screen: 'profile' })} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to FCM' onPress={()=>navigation.navigate('FCM')} />
-          </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Login"
+            onPress={() => navigation.navigate("Login")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Register"
+            onPress={() => navigation.navigate("Register")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Landing"
+            onPress={() => navigation.navigate("Bottom", { screen: "Home" })}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Cart"
+            onPress={() => navigation.navigate("Bottom", { screen: "Cart" })}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to SellProduct"
+            onPress={() => navigation.navigate("SellProduct")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Request Product"
+            onPress={() => navigation.navigate("RequestProduct")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Manage Product"
+            onPress={() => navigation.navigate("ManageProduct")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Profile"
+            onPress={() => navigation.navigate("Bottom", { screen: "Profile" })}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to Transaction"
+            onPress={() => navigation.navigate("Transaction")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to RequestAdmin"
+            onPress={() => navigation.navigate("RequestAdmin")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to StatusAdmin"
+            onPress={() => navigation.navigate("StatusAdmin")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to StatusProduct"
+            onPress={() => navigation.navigate("StatusProduct")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Go to BottomAdmin"
+            onPress={() => navigation.navigate("BottomAdmin")}
+          />
+        </View>
       </View>
     );
   }
-  
-  // console.log(userAcc)
-  
+
   return (
     <View style={styles.container}>
-      <Button title='Logout' onPress={handleLogout} />
+      <Button title="Logout" onPress={handleLogout} />
       <Text style={styles.title}>Home Screen</Text>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Login' onPress={()=>navigation.navigate('Login')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Register' onPress={()=>navigation.navigate('Register')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Landing' onPress={()=>navigation.navigate('Bottom', { screen: 'Home' })} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Cart' onPress={()=>navigation.navigate('Bottom', { screen: 'Cart' })} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to SellProduct' onPress={()=>navigation.navigate('SellProduct')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Request Product' onPress={()=>navigation.navigate('RequestProduct')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Manage Product' onPress={()=>navigation.navigate('ManageProduct')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to Profile' onPress={()=>navigation.navigate('Bottom', { screen: 'Profile' })} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title='Go to FCM' onPress={()=>navigation.navigate('FCM')} />
-          </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Login"
+          onPress={() => navigation.navigate("Login")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Register"
+          onPress={() => navigation.navigate("Register")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Landing"
+          onPress={() => navigation.navigate("Bottom", { screen: "Home" })}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Cart"
+          onPress={() => navigation.navigate("Bottom", { screen: "Cart" })}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to SellProduct"
+          onPress={() => navigation.navigate("SellProduct")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Request Product"
+          onPress={() => navigation.navigate("RequestProduct")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Manage Product"
+          onPress={() => navigation.navigate("ManageProduct")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Profile"
+          onPress={() => navigation.navigate("Bottom", { screen: "Profile" })}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to Transaction"
+          onPress={() => navigation.navigate("Transaction")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to RequestAdmin"
+          onPress={() => navigation.navigate("RequestAdmin")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to StatusAdmin"
+          onPress={() => navigation.navigate("StatusAdmin")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to StatusProduct"
+          onPress={() => navigation.navigate("StatusProduct")}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Go to BottomAdmin"
+          onPress={() => navigation.navigate("BottomAdmin")}
+        />
+      </View>
     </View>
   );
 };
@@ -117,9 +197,9 @@ const DebugScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1B75BB',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1B75BB",
   },
   title: {
     fontSize: 24,
@@ -127,7 +207,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 10,
-    width: '80%',
+    width: "80%",
   },
 });
 

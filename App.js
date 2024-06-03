@@ -3,6 +3,12 @@ import { View, Button, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, 
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Icon } from 'react-native-paper';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
+import { app } from './firebase'
+
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -13,11 +19,11 @@ import RequestProductScreen from './screens/RequestProductScreen';
 import ManageProductScreen from './screens/ManageProductScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import TransactionScreen from './screens/TransactionScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-paper';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
-import { app } from './firebase'
+// import FCMScreen from './screens/FCMScreen';
+import RequestAdminScreen from './screens/RequestAdminScreen';
+import StatusAdminScreen from './screens/StatusAdminScreen';
+import StatusProductScreen from './screens/StatusProductScreen';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -162,17 +168,45 @@ const BottomNavigation = () => {
   );
 };
 
+const BottomNavigationAdmin = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="RequestAdmin" component={RequestAdminScreen} options={{ 
+        animationEnabled: false, 
+        headerShown: false, 
+        tabBarIcon: ({ color, size }) => (
+          <Icon source="clipboard-list-outline" color={color} size={size} />
+        ), 
+      }} />
+      <Tab.Screen name="StatusAdmin" component={StatusAdminScreen} options={{ 
+        animationEnabled: false, 
+        headerShown: false, 
+        tabBarIcon: ({ color, size }) => (
+          <Icon source="clipboard-list-outline" color={color} size={size} />
+        ), 
+      }} />
+    </Tab.Navigator>
+  );
+};
+
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {/* <Stack.Screen name="Debug" component={DebugScreen} initialParams={{ userData: userData }} /> */}
+      <Stack.Navigator initialRouteName="Debug">
+        <Stack.Screen name="Debug" component={DebugScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="SellProduct" component={SellProductScreen} options={{ headerShown: false }} /> */}
         <Stack.Screen name="RequestProduct" component={RequestProductScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ManageProduct" component={ManageProductScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Bottom" component={BottomNavigation} options={{ headerShown: false }} />
+        <Stack.Screen name="SellProduct" component={SellProductScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Transaction" component={TransactionScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="FCM" component={FCMScreen} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="RequestAdmin" component={RequestAdminScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="StatusAdmin" component={StatusAdminScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="StatusProduct" component={StatusProductScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="BottomAdmin" component={BottomNavigationAdmin} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
