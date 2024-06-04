@@ -5,8 +5,20 @@ import { Image } from "react-native";
 import BottomNav from "../components/BottomNav";
 import { StyleSheet } from "react-native";
 import { Icon } from "react-native-paper";
+import {useFonts} from 'expo-font';
 
 const HomeScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+    'Poppins-Medium': require('../assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf'),
+
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   return (
     <View className="flex-1 bg-white pt-10">
       <ScrollView className="">
@@ -17,7 +29,7 @@ const HomeScreen = ({ navigation }) => {
                             </View> */}
             <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row w-full justify-center">
               <Icon source="map-marker-outline" size={25} />
-              <Text className="font-semibold text-base mr-2">
+              <Text className="font-semibold text-base mr-2" style={{ fontSize: 20, fontFamily: 'Poppins-aSemiBold'}}>
                 Jatinangor, West Java{" "}
               </Text>
             </View>

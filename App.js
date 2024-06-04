@@ -8,6 +8,7 @@ import { Icon } from 'react-native-paper';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
 import { app } from './firebase'
+import { useFonts } from 'expo-font';
 
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -34,8 +35,20 @@ const ModalButtonComponent = () => {
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
+  const [fontsLoaded, fontError] = useFonts({
+    'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-SemiBold': require('./assets/fonts/Poppins-SemiBold.ttf'),
+
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   return (
+    
     <>
       <TouchableOpacity onPress={toggleModal} >
         <Image source={require('./assets/images/loaknow-navbar.png')} style={{width:30, height:30}}/>
