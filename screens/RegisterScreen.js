@@ -20,6 +20,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { app } from "../firebase";
+import { ScrollView } from "react-native-gesture-handler";
 const RegisterScreen = ({ navigation }) => {
   const db = getFirestore(app);
   const [email, setEmail] = useState("");
@@ -130,124 +131,128 @@ const RegisterScreen = ({ navigation }) => {
   }
 
   return (
-    <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse overflow-scroll">
-      <View className=" h-4/5 bg-white rounded-t-3xl p-4">
-        <View className="mt-4">
-          <Title className="text-3xl font-bold text-[poppins]">Sign Up</Title>
-          <Text className="text-[#656565] text-lg mb-2">Create an account</Text>
-          <Text className="mb-2">Email</Text>
-          <TextInput
-            className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
-            value={email}
-            mode="flat"
-            underlineColor="transparent"
-            activeUnderlineColor="transparent"
-            placeholder="Enter your email"
-            onChangeText={(email) => {
-              setEmail(email);
-              setErrors((errors) => ({ ...errors, email: "" }));
-            }}
-            error={errors.email !== ""}
-          />
-          <HelperText type="error" visible={errors.email !== ""}>
-            {errors.email}
-          </HelperText>
-          <Text className="mb-2">Full Name</Text>
-          <TextInput
-            className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
-            value={fullName}
-            mode="flat"
-            underlineColor="transparent"
-            activeUnderlineColor="transparent"
-            placeholder="Enter your full name"
-            onChangeText={(fullName) => {
-              setFullName(fullName);
-              setErrors((errors) => ({ ...errors, fullName: "" }));
-            }}
-            error={errors.fullName !== ""}
-          />
-          <HelperText type="error" visible={errors.fullName !== ""}>
-            {errors.fullName}
-          </HelperText>
-          <Text className="mb-2">Password</Text>
-          <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
+    <ScrollView>
+      <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse overflow-scroll">
+        <View className=" h-4/5 bg-white rounded-t-3xl p-4">
+          <View className="mt-4">
+            <Title className="text-3xl font-bold text-[poppins]">Sign Up</Title>
+            <Text className="text-[#656565] text-lg mb-2">
+              Create an account
+            </Text>
+            <Text className="mb-2">Email</Text>
             <TextInput
-              className="w-10/12"
-              value={password}
+              className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+              value={email}
               mode="flat"
               underlineColor="transparent"
               activeUnderlineColor="transparent"
-              placeholder="Enter your password"
-              onChangeText={(password) => {
-                setPassword(password);
-                setErrors((errors) => ({ ...errors, password: "" }));
+              placeholder="Enter your email"
+              onChangeText={(email) => {
+                setEmail(email);
+                setErrors((errors) => ({ ...errors, email: "" }));
               }}
-              error={errors.password !== ""}
-              secureTextEntry={!showPassword}
+              error={errors.email !== ""}
             />
-            <IconButton
-              className="ml-6"
-              icon={showPassword ? "eye" : "eye-off"}
-              size={20}
-              iconColor="#1B75BB"
-              onPress={() => setShowPassword(!showPassword)}
-            />
-          </View>
-          <HelperText type="error" visible={errors.password !== ""}>
-            {errors.password}
-          </HelperText>
-          <Text className="mb-2">Repeat Password</Text>
-          <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
+            <HelperText type="error" visible={errors.email !== ""}>
+              {errors.email}
+            </HelperText>
+            <Text className="mb-2">Full Name</Text>
             <TextInput
-              className="w-10/12"
-              value={repeatPassword}
+              className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
+              value={fullName}
               mode="flat"
               underlineColor="transparent"
               activeUnderlineColor="transparent"
-              placeholder="Enter your password again"
-              onChangeText={(password) => {
-                setRepeatPassword(password);
-                setErrors((errors) => ({ ...errors, repeatPassword: "" }));
+              placeholder="Enter your full name"
+              onChangeText={(fullName) => {
+                setFullName(fullName);
+                setErrors((errors) => ({ ...errors, fullName: "" }));
               }}
-              error={errors.password !== ""}
-              secureTextEntry={!showPasswordRepeat}
+              error={errors.fullName !== ""}
             />
-            <IconButton
-              className="ml-6"
-              icon={showPasswordRepeat ? "eye" : "eye-off"}
-              size={20}
-              iconColor="#1B75BB"
-              onPress={() => setShowPasswordRepeat(!showPasswordRepeat)}
-            />
+            <HelperText type="error" visible={errors.fullName !== ""}>
+              {errors.fullName}
+            </HelperText>
+            <Text className="mb-2">Password</Text>
+            <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
+              <TextInput
+                className="w-10/12"
+                value={password}
+                mode="flat"
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
+                placeholder="Enter your password"
+                onChangeText={(password) => {
+                  setPassword(password);
+                  setErrors((errors) => ({ ...errors, password: "" }));
+                }}
+                error={errors.password !== ""}
+                secureTextEntry={!showPassword}
+              />
+              <IconButton
+                className="ml-6"
+                icon={showPassword ? "eye" : "eye-off"}
+                size={20}
+                iconColor="#1B75BB"
+                onPress={() => setShowPassword(!showPassword)}
+              />
+            </View>
+            <HelperText type="error" visible={errors.password !== ""}>
+              {errors.password}
+            </HelperText>
+            <Text className="mb-2">Repeat Password</Text>
+            <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
+              <TextInput
+                className="w-10/12"
+                value={repeatPassword}
+                mode="flat"
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
+                placeholder="Enter your password again"
+                onChangeText={(password) => {
+                  setRepeatPassword(password);
+                  setErrors((errors) => ({ ...errors, repeatPassword: "" }));
+                }}
+                error={errors.password !== ""}
+                secureTextEntry={!showPasswordRepeat}
+              />
+              <IconButton
+                className="ml-6"
+                icon={showPasswordRepeat ? "eye" : "eye-off"}
+                size={20}
+                iconColor="#1B75BB"
+                onPress={() => setShowPasswordRepeat(!showPasswordRepeat)}
+              />
+            </View>
+            <HelperText type="error" visible={errors.repeatPassword !== ""}>
+              {errors.repeatPassword}
+            </HelperText>
           </View>
-          <HelperText type="error" visible={errors.repeatPassword !== ""}>
-            {errors.repeatPassword}
-          </HelperText>
-        </View>
-        <Button
-          mode="contained"
-          onPress={handleRegister}
-          className="bg-loaknow-blue rounded-full px-4 py-2"
-        >
-          <Text className="text-lg text-loaknow-yellow">Sign Up</Text>
-        </Button>
-        <Text className="text-center mt-4">
-          Already have an account?{" "}
-          <Text
-            onPress={() => navigation.replace("Login")}
-            className="text-loaknow-blue"
+          <Button
+            mode="contained"
+            onPress={handleRegister}
+            className="bg-loaknow-yellow rounded-full px-4 py-2"
           >
-            Login
+            <Text className="text-lg font-bold">Sign Up</Text>
+          </Button>
+          <Text className="text-center mt-4">
+            Already have an account?{" "}
+            <Text
+              onPress={() => navigation.replace("Login")}
+              className="text-loaknow-blue"
+            >
+              Login
+            </Text>
           </Text>
-        </Text>
+        </View>
+        <View className="mb-[-38] z-[-1]">
+          <Image
+            source={require("../assets/images/register.png")}
+            style={{ width: 180, height: 180, alignSelf: "center" }}
+          />
+        </View>
       </View>
-      <View className="mb-[-38] z-[-1]">
-        <Image
-          source={require("../assets/images/register.png")}
-          style={{ width: 180, height: 180, alignSelf: "center" }}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 

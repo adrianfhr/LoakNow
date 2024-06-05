@@ -133,7 +133,7 @@ const RequestAdminScreen = ({ navigation }) => {
             </Text>
           </View>
           <Image
-            className=""
+            className="rotate-180"
             source={require("../assets/images/arrow.png")}
             style={{ width: 10, height: 12 }}
           />

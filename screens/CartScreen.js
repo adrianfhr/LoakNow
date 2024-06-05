@@ -67,7 +67,7 @@ const CartScreen = ({ navigation }) => {
               <TouchableOpacity onPress={toggleCheck}>
                 <View className="w-6 h-5 border-[1px] rounded-lg border-loaknow-gray mr-2 flex items-center justify-center">
                   {isChecked ? (
-                    <Text style={{ color: "green" }}>✔️</Text>
+                    <Text style={{ color: "green" }}>✓</Text>
                   ) : null}
                 </View>
               </TouchableOpacity>

@@ -23,16 +23,12 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView className="">
         <View className="mx-7">
           <View className="flex flex-row items-center my-2">
-            {/* <View className="rounded-full bg-loaknow-bg/20 p-1.5 mr-2">
-                                <Image className=""source={require('../assets/images/burger.png')} style={{width:30, height:30}}/>
-                            </View> */}
             <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row w-full items-center">
-              <Icon source="map-marker-outline" size={25} />
               <Text
                 className=""
                 style={{ fontSize: 17, fontFamily: "Poppins-Medium" }}
               >
-                Jatinangor, West Java{" "}
+                Jatinangor, West Java
               </Text>
             </View>
           </View>
@@ -57,54 +53,40 @@ const HomeScreen = ({ navigation }) => {
             >
               Categories
             </Text>
-            <Text className="underline text-loaknow-categories">
-              See All Categories
-            </Text>
+            
           </View>
           <ScrollView horizontal>
-            <View className="flex flex-row">
-              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+            <View className="flex flex-row gap-2 py-2">
                 <Image
-                  source={require("../assets/images/categories1.png")}
+                  source={require("../assets/images/categories-1.png")}
                   className=""
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 75, height: 75 }}
                 />
-              </View>
-              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
                 <Image
-                  source={require("../assets/images/categories1.png")}
+                  source={require("../assets/images/categories-2.png")}
                   className=""
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 75, height: 75 }}
                 />
-              </View>
-              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
                 <Image
-                  source={require("../assets/images/categories1.png")}
+                  source={require("../assets/images/categories-3.png")}
                   className=""
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 75, height: 75 }}
                 />
-              </View>
-              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
                 <Image
-                  source={require("../assets/images/categories1.png")}
+                  source={require("../assets/images/categories-4.png")}
                   className=""
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 75, height: 75 }}
                 />
-              </View>
-              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
                 <Image
-                  source={require("../assets/images/categories1.png")}
+                  source={require("../assets/images/categories-5.png")}
                   className=""
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 75, height: 75 }}
                 />
-              </View>
-              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
                 <Image
-                  source={require("../assets/images/categories1.png")}
+                  source={require("../assets/images/categories-6.png")}
                   className=""
-                  style={{ width: 70, height: 70 }}
+                  style={{ width: 75, height: 75 }}
                 />
-              </View>
             </View>
           </ScrollView>
 
