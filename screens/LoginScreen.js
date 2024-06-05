@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, TextInput, ToastAndroid } from "react-native";
+import { View, Image, TextInput, ToastAndroid } from "react-native";
 import { Button, Title, HelperText, Text } from "react-native-paper";
 import { useState, useEffect } from "react";
 import {
@@ -7,8 +7,19 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { IconButton } from "react-native-paper";
+import { useFonts } from "expo-font";
 
 const LoginScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,11 +110,21 @@ const LoginScreen = ({ navigation }) => {
     <View className="bg-loaknow-blue w-screen h-full flex-col-reverse overflow-scroll">
       <View className="bg-white rounded-t-3xl px-4 py-8">
         <View className="mt-4">
-          <Title className="text-3xl font-bold text-[poppins]">Login</Title>
-          <Text className="text-[#656565] text-lg mb-2">
+          <Title
+            className="text-3xl"
+            style={{ fontFamily: "Poppins-SemiBold" }}
+          >
+            Login
+          </Title>
+          <Text
+            className="text-[#656565] text-lg mb-2"
+            style={{ fontFamily: "Poppins-Medium" }}
+          >
             Login to your existing account
           </Text>
-          <Text className="mb-2">Email</Text>
+          <Text className="mb-2" style={{ fontFamily: "Poppins-Medium" }}>
+            Email
+          </Text>
           <TextInput
             className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
             value={email}
@@ -124,7 +145,9 @@ const LoginScreen = ({ navigation }) => {
           >
             {errors.email}
           </HelperText>
-          <Text className="mb-2">Password</Text>
+          <Text className="mb-2" style={{ fontFamily: "Poppins-Medium" }}>
+            Password
+          </Text>
           <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
             <TextInput
               className="w-10/12"
@@ -157,11 +180,17 @@ const LoginScreen = ({ navigation }) => {
           onPress={handleLogin}
           className="bg-loaknow-yellow rounded-full px-4 py-2"
         >
-          <Text className="text-lg ">Sign In</Text>
+          <Text className="text-lg" style={{ fontFamily: "Poppins-Medium" }}>
+            Sign In
+          </Text>
         </Button>
-        <Text className="text-center mt-4">
+        <Text
+          className="text-center mt-4"
+          style={{ fontFamily: "Poppins-Medium" }}
+        >
           Don't have an account?{" "}
           <Text
+            style={{ fontFamily: "Poppins-Medium" }}
             onPress={() => navigation.replace("Register")}
             className="text-loaknow-blue"
           >

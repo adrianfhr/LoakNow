@@ -21,7 +21,19 @@ import {
 } from "firebase/firestore";
 import { app } from "../firebase";
 import { ScrollView } from "react-native-gesture-handler";
+import { useFonts } from "expo-font";
+
 const RegisterScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const db = getFirestore(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -135,11 +147,21 @@ const RegisterScreen = ({ navigation }) => {
       <View className="bg-[#1B75BB] w-screen h-full flex-col-reverse overflow-scroll">
         <View className=" h-4/5 bg-white rounded-t-3xl p-4">
           <View className="mt-4">
-            <Title className="text-3xl font-bold text-[poppins]">Sign Up</Title>
-            <Text className="text-[#656565] text-lg mb-2">
+            <Title
+              className="text-3xl"
+              style={{ fontFamily: "Poppins-SemiBold" }}
+            >
+              Sign Up
+            </Title>
+            <Text
+              className="text-[#656565] text-lg mb-2"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
               Create an account
             </Text>
-            <Text className="mb-2">Email</Text>
+            <Text className="mb-2" style={{ fontFamily: "Poppins-Medium" }}>
+              Email
+            </Text>
             <TextInput
               className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
               value={email}
@@ -156,7 +178,9 @@ const RegisterScreen = ({ navigation }) => {
             <HelperText type="error" visible={errors.email !== ""}>
               {errors.email}
             </HelperText>
-            <Text className="mb-2">Full Name</Text>
+            <Text className="mb-2" style={{ fontFamily: "Poppins-Medium" }}>
+              Full Name
+            </Text>
             <TextInput
               className="px-4 py-4 bg-gray-100 border-2 border-loaknow-yellow rounded-full"
               value={fullName}
@@ -173,7 +197,9 @@ const RegisterScreen = ({ navigation }) => {
             <HelperText type="error" visible={errors.fullName !== ""}>
               {errors.fullName}
             </HelperText>
-            <Text className="mb-2">Password</Text>
+            <Text className="mb-2" style={{ fontFamily: "Poppins-Medium" }}>
+              Password
+            </Text>
             <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
               <TextInput
                 className="w-10/12"
@@ -200,7 +226,9 @@ const RegisterScreen = ({ navigation }) => {
             <HelperText type="error" visible={errors.password !== ""}>
               {errors.password}
             </HelperText>
-            <Text className="mb-2">Repeat Password</Text>
+            <Text className="mb-2" style={{ fontFamily: "Poppins-Medium" }}>
+              Repeat Password
+            </Text>
             <View className="flex-row px-4 py-2 bg-gray-100 border-2 border-loaknow-yellow rounded-full">
               <TextInput
                 className="w-10/12"
@@ -233,13 +261,19 @@ const RegisterScreen = ({ navigation }) => {
             onPress={handleRegister}
             className="bg-loaknow-yellow rounded-full px-4 py-2"
           >
-            <Text className="text-lg font-bold">Sign Up</Text>
+            <Text className="text-lg " style={{ fontFamily: "Poppins-Medium" }}>
+              Sign Up
+            </Text>
           </Button>
-          <Text className="text-center mt-4">
+          <Text
+            className="text-center mt-4"
+            style={{ fontFamily: "Poppins-Medium" }}
+          >
             Already have an account?{" "}
             <Text
               onPress={() => navigation.replace("Login")}
               className="text-loaknow-blue"
+              style={{ fontFamily: "Poppins-Medium" }}
             >
               Login
             </Text>
@@ -252,6 +286,7 @@ const RegisterScreen = ({ navigation }) => {
           />
         </View>
       </View>
+      <View style={{ height: 38 }} />
     </ScrollView>
   );
 };

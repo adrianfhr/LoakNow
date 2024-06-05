@@ -10,8 +10,6 @@ import {
   Modal,
   StyleSheet,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
-import ModalDropdown from "react-native-modal-dropdown";
 import { Picker } from "@react-native-picker/picker";
 import { TextInput, Text } from "react-native-paper";
 import { Formik } from "formik";
@@ -29,8 +27,19 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { useFonts } from "expo-font";
 
 const RequestProductScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const db = getFirestore(app);
   const [showNewView, setShowNewView] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -135,7 +144,10 @@ const RequestProductScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
             <View className=" ml-3 justify-center items-center">
-              <Text className=" font-semibold text-xl  ">
+              <Text
+                className="text-xl"
+                style={{ fontFamily: "Poppins-SemiBold" }}
+              >
                 {" "}
                 Request Product{" "}
               </Text>
@@ -200,7 +212,10 @@ const RequestProductScreen = ({ navigation }) => {
           >
             {({ handleChange, handleSubmit, values }) => (
               <View>
-                <Text className="font-semibold text-base my-3">
+                <Text
+                  className="text-base my-3"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
                   Product Picture & Video{" "}
                   <Text style={{ color: "red" }}> *</Text>
                 </Text>
@@ -223,7 +238,10 @@ const RequestProductScreen = ({ navigation }) => {
                     )}
                   </TouchableOpacity>
                 </View>
-                <Text className="font-semibold text-base mb-3">
+                <Text
+                  className="text-base mb-3"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
                   Product Name <Text style={{ color: "red" }}> *</Text>
                 </Text>
                 <TextInput
@@ -235,7 +253,10 @@ const RequestProductScreen = ({ navigation }) => {
                   value={values?.name}
                   onChangeText={handleChange("name")}
                 />
-                <Text className="font-semibold text-base mb-3">
+                <Text
+                  className="text-base mb-3"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
                   Product Details <Text style={{ color: "red" }}> *</Text>
                 </Text>
                 <TextInput
@@ -247,7 +268,10 @@ const RequestProductScreen = ({ navigation }) => {
                   value={values?.details}
                   onChangeText={handleChange("details")}
                 />
-                <Text className="font-semibold text-base mb-3">
+                <Text
+                  className="text-base mb-3"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
                   Categories <Text style={{ color: "red" }}> *</Text>
                 </Text>
                 <View className="rounded-full px-2 bg-loaknow-bg/20 mb-2">
@@ -281,7 +305,10 @@ const RequestProductScreen = ({ navigation }) => {
                 />
                 <View className="flex flex-row gap-8 mb-3">
                   <View className="w-36">
-                    <Text className="mb-3 font-semibold">
+                    <Text
+                      className="mb-3"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Price <Text style={{ color: "red" }}> *</Text>
                     </Text>
                     <TextInput
@@ -296,7 +323,10 @@ const RequestProductScreen = ({ navigation }) => {
                     />
                   </View>
                   <View>
-                    <Text className="mb-3 font-semibold">
+                    <Text
+                      className="mb-3"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Stock <Text style={{ color: "red" }}> *</Text>
                     </Text>
                     <TextInput
@@ -313,7 +343,10 @@ const RequestProductScreen = ({ navigation }) => {
                 </View>
                 <View className="flex flex-row gap-8">
                   <View className="w-36">
-                    <Text className="mb-3 font-semibold">
+                    <Text
+                      className="mb-3"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Condition <Text style={{ color: "red" }}> *</Text>
                     </Text>
                     <View className="rounded-full px-2 bg-loaknow-bg/20 mb-2">
@@ -348,7 +381,10 @@ const RequestProductScreen = ({ navigation }) => {
                     />
                   </View>
                   <View>
-                    <Text className="mb-3 font-semibold">
+                    <Text
+                      className="mb-3"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Dangerous Product <Text style={{ color: "red" }}> *</Text>
                     </Text>
                     <View className="rounded-full px-2 bg-loaknow-bg/20 mb-2">
@@ -386,11 +422,19 @@ const RequestProductScreen = ({ navigation }) => {
                 <TouchableOpacity onPress={handleSubmit}>
                   {!showNewView ? (
                     <View className="bg-loaknow-yellow items-center justify-center rounded-full p-3 mt-4">
-                      <Text className="font-semibold text-base">Request</Text>
+                      <Text
+                        className="text-base"
+                        style={{ fontFamily: "Poppins-Medium" }}
+                      >
+                        Request
+                      </Text>
                     </View>
                   ) : (
                     <View className="bg-loaknow-blue items-center justify-center rounded-full p-3 mt-4">
-                      <Text className="font-semibold text-base text-loaknow-yellow">
+                      <Text
+                        className="text-base text-loaknow-yellow"
+                        style={{ fontFamily: "Poppins-Medium" }}
+                      >
                         Request
                       </Text>
                     </View>

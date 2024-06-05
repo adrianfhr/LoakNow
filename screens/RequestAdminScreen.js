@@ -17,8 +17,19 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { app } from "../firebase";
+import { useFonts } from "expo-font";
 
 const RequestAdminScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const [showNewView, setShowNewView] = useState(false);
   const [date, setDate] = useState(new Date());
 
@@ -91,27 +102,55 @@ const RequestAdminScreen = ({ navigation }) => {
               source={require("../assets/images/request-product-logo1.png")}
               style={{ width: 20, height: 20 }}
             />
-            <Text className="font-bold text-lg text-loaknow-blue">
+            <Text
+              className="text-lg text-loaknow-blue"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
               {request.username}
             </Text>
           </View>
         </View>
 
-        <Text className="mb-2 text-loaknow-gray">{formattedDate}</Text>
+        <Text
+          className="mb-2 text-loaknow-gray"
+          style={{ fontFamily: "Poppins-Medium" }}
+        >
+          {formattedDate}
+        </Text>
         <View className="flex flex-row gap-3">
           <Image source={{ uri: request.image }} style={styles.productImage} />
           <View className="">
-            <Text className="font-bold mb-1 text-base">{request.details}</Text>
-            <Text className="text-loaknow-blue mb-1 font-bold text-base">
+            <Text
+              className="mb-1 text-base"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
+              {request.details}
+            </Text>
+            <Text
+              className="text-loaknow-blue mb-1 text-base"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
               {formattedPrice}
             </Text>
-            <Text className="text-base">{request.stock}x</Text>
+            <Text
+              className="text-base"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
+              {request.stock}x
+            </Text>
           </View>
         </View>
 
         <View className=" items-end  px-2">
-          <Text className="text-loaknow-gray text-base">Total Harga</Text>
-          <Text className="font-semibold text-base">{formattedTotalPrice}</Text>
+          <Text
+            className="text-loaknow-gray text-base"
+            style={{ fontFamily: "Poppins-Medium" }}
+          >
+            Total Harga
+          </Text>
+          <Text className="text-base" style={{ fontFamily: "Poppins-Medium" }}>
+            {formattedTotalPrice}
+          </Text>
         </View>
 
         <TouchableOpacity
@@ -128,7 +167,10 @@ const RequestAdminScreen = ({ navigation }) => {
               source={require("../assets/images/truck.png")}
               style={{ width: 25, height: 20 }}
             />
-            <Text className="font-semibold text-base ml-3">
+            <Text
+              className="text-base ml-3"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
               Details Product
             </Text>
           </View>
@@ -146,14 +188,24 @@ const RequestAdminScreen = ({ navigation }) => {
     <View className="flex-1 bg-white pt-10">
       <View className="mx-7">
         <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-2 mt-3 justify-center mb-4">
-          <View className="flex-row items-center justify-evenly  w-48">
-            <Text className=" font-semibold text-xl  ">Request</Text>
+          <View className="flex-row items-center justify-evenly  w-48 gap-2">
+            <Text
+              className="text-xl"
+              style={{ fontFamily: "Poppins-SemiBold" }}
+            >
+              Request
+            </Text>
             <Image
               className=""
               source={require("../assets/images/request-product-logo1.png")}
               style={{ width: 20, height: 20 }}
             />
-            <Text className=" font-semibold text-xl  ">Product</Text>
+            <Text
+              className="text-xl"
+              style={{ fontFamily: "Poppins-SemiBold" }}
+            >
+              Product
+            </Text>
           </View>
         </View>
         {/* isi page */}

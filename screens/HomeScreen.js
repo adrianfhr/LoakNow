@@ -1,10 +1,6 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, StyleSheet, Image } from "react-native";
 import { Text } from "react-native-paper";
 import Searchingbar from "../components/SearchBar";
-import { Image } from "react-native";
-import BottomNav from "../components/BottomNav";
-import { StyleSheet } from "react-native";
-import { Icon } from "react-native-paper";
 import { useFonts } from "expo-font";
 
 const HomeScreen = ({ navigation }) => {
@@ -53,40 +49,39 @@ const HomeScreen = ({ navigation }) => {
             >
               Categories
             </Text>
-            
           </View>
           <ScrollView horizontal>
             <View className="flex flex-row gap-2 py-2">
-                <Image
-                  source={require("../assets/images/categories-1.png")}
-                  className=""
-                  style={{ width: 75, height: 75 }}
-                />
-                <Image
-                  source={require("../assets/images/categories-2.png")}
-                  className=""
-                  style={{ width: 75, height: 75 }}
-                />
-                <Image
-                  source={require("../assets/images/categories-3.png")}
-                  className=""
-                  style={{ width: 75, height: 75 }}
-                />
-                <Image
-                  source={require("../assets/images/categories-4.png")}
-                  className=""
-                  style={{ width: 75, height: 75 }}
-                />
-                <Image
-                  source={require("../assets/images/categories-5.png")}
-                  className=""
-                  style={{ width: 75, height: 75 }}
-                />
-                <Image
-                  source={require("../assets/images/categories-6.png")}
-                  className=""
-                  style={{ width: 75, height: 75 }}
-                />
+              <Image
+                source={require("../assets/images/categories-1.png")}
+                className=""
+                style={{ width: 75, height: 75 }}
+              />
+              <Image
+                source={require("../assets/images/categories-2.png")}
+                className=""
+                style={{ width: 75, height: 75 }}
+              />
+              <Image
+                source={require("../assets/images/categories-3.png")}
+                className=""
+                style={{ width: 75, height: 75 }}
+              />
+              <Image
+                source={require("../assets/images/categories-4.png")}
+                className=""
+                style={{ width: 75, height: 75 }}
+              />
+              <Image
+                source={require("../assets/images/categories-5.png")}
+                className=""
+                style={{ width: 75, height: 75 }}
+              />
+              <Image
+                source={require("../assets/images/categories-6.png")}
+                className=""
+                style={{ width: 75, height: 75 }}
+              />
             </View>
           </ScrollView>
 
@@ -99,17 +94,28 @@ const HomeScreen = ({ navigation }) => {
           <View className="flex flex-row flex-wrap justify-between gap-5">
             <View className=" bg-loaknow-bg/20 rounded-xl p-2 w-40">
               <Image source={require("../assets/images/produkk.png")} />
-              <Text className="my-2 text-sm font-semibold">
+              <Text
+                className="my-2 text-sm"
+                style={{ fontFamily: "Poppins-Medium" }}
+              >
                 Sneakers Red White
               </Text>
-              <Text className="text-loaknow-blue text-sm mb-1 font-medium">
+              <Text
+                className="text-loaknow-blue text-sm mb-1 "
+                style={{ fontFamily: "Poppins-Medium" }}
+              >
                 Rp 150.000
               </Text>
               <View className="flex flex-row justify-between items-center">
                 <Text className="text-xs line-through text-loaknow-gray">
                   Rp300.000
                 </Text>
-                <Text className="text-xs text-loaknow-discount">50%Off</Text>
+                <Text
+                  className="text-xs text-loaknow-discount"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
+                  50%Off
+                </Text>
                 <View className=" bg-loaknow-yellow rounded-full w-6 h-6 flex justify-center items-center">
                   <Text className="font-semibold">+</Text>
                 </View>

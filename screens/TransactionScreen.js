@@ -16,8 +16,18 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { app } from "../firebase"; // pastikan path ini benar
-
+import { useFonts } from "expo-font";
 const TransactionScreen = ({ navigation, route }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const userData = route.params?.userData;
   console.log("Ini userData:", userData);
   const [transactionState, setTransactionState] = useState("Marketplace");
@@ -126,12 +136,15 @@ const TransactionScreen = ({ navigation, route }) => {
               source={require("../assets/images/truck.png")}
               style={{ width: 25, height: 20 }}
             />
-            <Text className="font-semibold text-base ml-3">
+            <Text
+              className="text-base ml-3"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
               Details Product
             </Text>
           </View>
           <Image
-            className=""
+            className="rotate-180"
             source={require("../assets/images/arrow.png")}
             style={{ width: 10, height: 12 }}
           />
@@ -167,7 +180,13 @@ const TransactionScreen = ({ navigation, route }) => {
             />
           </TouchableOpacity>
           <View className=" ml-3 justify-center items-center">
-            <Text className=" font-semibold text-xl  "> Transaction </Text>
+            <Text
+              className="text-xl"
+              style={{ fontFamily: "Poppins-SemiBold" }}
+            >
+              {" "}
+              Transaction{" "}
+            </Text>
           </View>
         </View>
         <View className="flex flex-row border-b-2 border-loaknow-bg/20 justify-between items-center px-16 my-2 mb-5">
@@ -179,7 +198,12 @@ const TransactionScreen = ({ navigation, route }) => {
               transactionState === "Marketplace" ? "border-b-2" : "border-b-0"
             } border-loaknow-blue mb-[-2px]`}
           >
-            <Text className="font-semibold text-base">Marketplace</Text>
+            <Text
+              className="text-base"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
+              Marketplace
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -189,7 +213,12 @@ const TransactionScreen = ({ navigation, route }) => {
               transactionState === "LoakNow" ? "border-b-2" : "border-b-0"
             } border-loaknow-blue mb-[-2px]`}
           >
-            <Text className="font-semibold text-base">Loak Now</Text>
+            <Text
+              className="text-base"
+              style={{ fontFamily: "Poppins-Medium" }}
+            >
+              Loak Now
+            </Text>
           </TouchableOpacity>
         </View>
         <ScrollView className="w-full" showsHorizontalScrollIndicator={false}>
@@ -198,14 +227,20 @@ const TransactionScreen = ({ navigation, route }) => {
               transactionMarketplace.length > 0 ? (
                 transactionMarketplace.map(renderTransaction)
               ) : (
-                <Text className="text-loaknow-gray text-center mt-4">
+                <Text
+                  className="text-loaknow-gray text-center mt-4"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
                   You do not have any transactions in the marketplace
                 </Text>
               )
             ) : transactionLoakNow.length > 0 ? (
               transactionLoakNow.map(renderTransaction)
             ) : (
-              <Text className="text-loaknow-gray text-center mt-4">
+              <Text
+                className="text-loaknow-gray text-center mt-4"
+                style={{ fontFamily: "Poppins-Medium" }}
+              >
                 You do not have any transactions in Loak Now
               </Text>
             )}

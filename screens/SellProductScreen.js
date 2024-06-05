@@ -2,8 +2,19 @@ import { ScrollView, TouchableOpacity, View, ToastAndroid } from "react-native";
 import { useState } from "react";
 import { Image, Text } from "react-native";
 import { StyleSheet } from "react-native";
+import { useFonts } from "expo-font";
 
 const SellProductScreen = ({ navigation }) => {
+  const [fontsLoaded, fontError] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const [showNewView1, setShowNewView1] = useState(false);
   const [showNewView2, setShowNewView2] = useState(false);
 
@@ -34,25 +45,39 @@ const SellProductScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
           <View className=" ml-3 justify-center items-center">
-            <Text className=" font-semibold text-xl  "> Sell Product </Text>
+            <Text
+              className="text-xl"
+              style={{ fontFamily: "Poppins-SemiBold" }}
+            >
+              {" "}
+              Sell Product{" "}
+            </Text>
           </View>
         </View>
         <View className="absolute top-0 left-0 right-0 bottom-0 items-center justify-center">
           <View className="rounded-lg">
             <View className="justify-center flex items-center mb-3">
-              <Text>What type of sales do you want?</Text>
+              <Text style={{ fontFamily: "Poppins-Medium" }}>
+                What type of sales do you want?
+              </Text>
             </View>
             <View className="flex flex-row justify-between gap-4">
               <TouchableOpacity onPress={handlePress1}>
                 {showNewView1 ? (
                   <View className="bg-loaknow-blue rounded-lg p-2">
-                    <Text className="text-loaknow-yellow font-semibold text-base">
+                    <Text
+                      className="text-loaknow-yellow text-base"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Loak Now
                     </Text>
                   </View>
                 ) : (
                   <View className="bg-loaknow-yellow rounded-lg p-2">
-                    <Text className="text-loaknow-blue font-semibold text-base">
+                    <Text
+                      className="text-loaknow-blue text-base"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Loak Now
                     </Text>
                   </View>
@@ -62,13 +87,19 @@ const SellProductScreen = ({ navigation }) => {
               <TouchableOpacity onPress={handlePress2}>
                 {showNewView2 ? (
                   <View className="bg-loaknow-blue rounded-lg p-2">
-                    <Text className="text-loaknow-yellow font-semibold text-base">
+                    <Text
+                      className="text-loaknow-yellow text-base"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Marketplace
                     </Text>
                   </View>
                 ) : (
                   <View className="bg-loaknow-yellow rounded-lg p-2">
-                    <Text className="text-loaknow-blue font-semibold text-base">
+                    <Text
+                      className="text-loaknow-blue text-base"
+                      style={{ fontFamily: "Poppins-Medium" }}
+                    >
                       Marketplace
                     </Text>
                   </View>
