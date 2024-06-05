@@ -8,56 +8,65 @@ import { TextInput, Button, Title, HelperText, Text } from "react-native-paper";
 import { useState } from "react";
 import { Image, Modal } from "react-native";
 import { StyleSheet } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {
+  getFirestore,
+  collection,
+  query,
+  orderBy,
+  getDocs,
+} from "firebase/firestore";
 import { app } from "../firebase";
 import * as ImagePicker from "expo-image-picker";
-
 
 const StatusAdminScreen = ({ navigation, route }) => {
   const request = route.params?.request;
 
-  if(request) {
+  if (request) {
     const createdAt = new Date(
-      request.created_at.seconds * 1000 + request.created_at.nanoseconds / 1000000
+      request.created_at.seconds * 1000 +
+        request.created_at.nanoseconds / 1000000
     );
-  
+
     const updated_at = new Date(
-      request.updated_at.seconds * 1000 + request.updated_at.nanoseconds / 1000000
+      request.updated_at.seconds * 1000 +
+        request.updated_at.nanoseconds / 1000000
     );
-  
+
     const formattedDateCreatedDate = createdAt.toLocaleDateString("id-ID", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  
+
     const formattedDateUpdatedDate = updated_at.toLocaleDateString("id-ID", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  
+
     const formattedTimeUpdate = updated_at.toLocaleTimeString("id-ID", {
       hour: "2-digit",
       minute: "2-digit",
     });
-  
+
     const formattedPrice = new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
     }).format(request.prices);
-  
+
     const formattedTotalPrice = new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
     }).format(request.prices * request.stock);
-  
+
     const [showNewView, setShowNewView] = useState(false);
-    const [date, setDate] = useState(new Date());
     const [accepted, setAccepted] = useState(false);
     const [purchased, setPurchased] = useState(false);
     const [image, setImage] = useState(null);
+    const [time, setTime] = useState(new Date());
+    const [date, setDate] = useState(new Date());
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,7 +75,7 @@ const StatusAdminScreen = ({ navigation, route }) => {
         aspect: [4, 3],
         quality: 1,
       });
-    }
+    };
 
     const hangleUpdate = async () => {
       const db = getFirestore(app);
@@ -82,146 +91,161 @@ const StatusAdminScreen = ({ navigation, route }) => {
     const handlePurchased = () => {
       setPurchased(true);
     };
-  
+
     const handleAccept = () => {
       setAccepted(true);
     };
-  
+
     const handlePress = () => {
       setShowNewView(true);
     };
-      
-  return (
-    <View className="flex-1 bg-white  pt-10">
-      <View className="mx-7">
-        <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-2 mt-3 justify-center mb-4">
-          <View className="flex-row items-center justify-evenly  w-48">
-            <Text className=" font-semibold text-xl  ">Status</Text>
-            <Image
-              className=""
-              source={require("../assets/images/request-product-logo1.png")}
-              style={{ width: 20, height: 20 }}
-            />
-            <Text className=" font-semibold text-xl  ">Product</Text>
-          </View>
-        </View>
-        {/* isi page */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View className="flex flex-row items-center">
+
+    return (
+      <View className="flex-1 bg-white  pt-10">
+        <View className="mx-7">
+          <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-2 mt-3 justify-center mb-4">
+            <View className="flex-row items-center justify-evenly  w-48">
+              <Text className=" font-semibold text-xl  ">Status</Text>
               <Image
-                className="mr-2"
+                className=""
                 source={require("../assets/images/request-product-logo1.png")}
                 style={{ width: 20, height: 20 }}
               />
-              <Text className="font-bold text-lg text-loaknow-blue">
-                {request.username}
-              </Text>
+              <Text className=" font-semibold text-xl  ">Product</Text>
             </View>
           </View>
-          <Text className="mb-2 text-loaknow-gray">
-            {formattedDateCreatedDate}
-          </Text>
-
-          <View className="flex flex-row gap-3">
-            <Image
-              source={{ uri: request.image }}
-              style={styles.productImage}
-            />
-            <View className="">
-              <Text className="font-bold mb-1 text-base">
-                {request.details}
-              </Text>
-              <Text className="text-loaknow-blue mb-1 font-bold text-base">
-                {formattedPrice}
-              </Text>
-              <Text className="text-base">{request.stock}x</Text>
-            </View>
-          </View>
-          <View className=" items-end  px-2">
-            <Text className="text-loaknow-gray text-base">Total Harga</Text>
-            <Text className="font-semibold text-base">
-              {formattedTotalPrice}
-            </Text>
-          </View>
-          <View>
-            <Text className="text-loaknow-blue font-semibold">
-              Will you accept the product?
-            </Text>
-          </View>
-
-          {accepted ? (
-            <View className="bg-loaknow-blue rounded-lg px-12 py-3 justify-center items-center mt-2">
-              <Text className="text-loaknow-yellow font-semibold text-base">
-                Accepted
-              </Text>
-            </View>
-          ) : (
-            <View className="mt-2 flex flex-row justify-between ">
-              <TouchableOpacity>
-                <View className="bg-loaknow-gray/20 rounded-lg justify-center items-center w-36 py-3">
-                  <Text className="text-loaknow-gray font-semibold text-base">
-                    Decline
-                  </Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={handleAccept}>
-                <View className="bg-loaknow-yellow rounded-lg justify-center items-center w-36 py-3 ">
-                  <Text className="text-loaknow-blue  font-semibold text-base">
-                    Accept
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          <View>
-            <Text className="text-loaknow-blue font-semibold mt-2">
-              When will you ship the product?
-            </Text>
-            <TouchableOpacity>
-              <View className="flex-row bg-loaknow-gray/20 rounded-lg justify-center items-center w-36 py-3 mt-2 ">
-                <Text className="text-loaknow-gray font-semibold text-sm">
-                  X/X/XX XX:XX:XX
+          {/* isi page */}
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <View className="flex flex-row items-center">
+                <Image
+                  className="mr-2"
+                  source={require("../assets/images/request-product-logo1.png")}
+                  style={{ width: 20, height: 20 }}
+                />
+                <Text className="font-bold text-lg text-loaknow-blue">
+                  {request.username}
                 </Text>
               </View>
-            </TouchableOpacity>
-
-            <Text className="text-loaknow-blue font-semibold mt-2">
-              Will this product be purchased?
+            </View>
+            <Text className="mb-2 text-loaknow-gray">
+              {formattedDateCreatedDate}
             </Text>
-            {purchased ? (
+
+            <View className="flex flex-row gap-3">
+              <Image
+                source={{ uri: request.image }}
+                style={styles.productImage}
+              />
+              <View className="">
+                <Text className="font-bold mb-1 text-base">
+                  {request.details}
+                </Text>
+                <Text className="text-loaknow-blue mb-1 font-bold text-base">
+                  {formattedPrice}
+                </Text>
+                <Text className="text-base">{request.stock}x</Text>
+              </View>
+            </View>
+            <View className=" items-end  px-2">
+              <Text className="text-loaknow-gray text-base">Total Harga</Text>
+              <Text className="font-semibold text-base">
+                {formattedTotalPrice}
+              </Text>
+            </View>
+            <View>
+              <Text className="text-loaknow-blue font-semibold">
+                Will you accept the product?
+              </Text>
+            </View>
+
+            {accepted ? (
               <View className="bg-loaknow-blue rounded-lg px-12 py-3 justify-center items-center mt-2">
                 <Text className="text-loaknow-yellow font-semibold text-base">
-                  Purchased
+                  Accepted
                 </Text>
               </View>
             ) : (
               <View className="mt-2 flex flex-row justify-between ">
                 <TouchableOpacity>
-                  <View className="bg-loaknow-gray/20 rounded-lg justify-center items-center w-36 py-3 ">
+                  <View className="bg-loaknow-gray/20 rounded-lg justify-center items-center w-36 py-3">
                     <Text className="text-loaknow-gray font-semibold text-base">
-                      No
+                      Decline
                     </Text>
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={handlePurchased}>
+                <TouchableOpacity onPress={handleAccept}>
                   <View className="bg-loaknow-yellow rounded-lg justify-center items-center w-36 py-3 ">
                     <Text className="text-loaknow-blue  font-semibold text-base">
-                      Yes
+                      Accept
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
             )}
 
-            <Text className="text-loaknow-blue font-semibold mt-2">
-              Has the payment been made?
-            </Text>
-            {/* place holder image */}
-            <View className="flex flex-row my-3">
+            <View>
+              <Text className="text-loaknow-blue font-semibold mt-2">
+                When will you ship the product?
+              </Text>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="datetime"
+                onConfirm={(date) => {
+                  setDate(date);
+                  setDatePickerVisibility(false);
+                }}
+                onCancel={() => setDatePickerVisibility(false)}
+              />
+
+              <TouchableOpacity onPress={() => setDatePickerVisibility(true)}>
+                <View className="flex-row bg-loaknow-gray/20 rounded-lg justify-center items-center w-36 py-3 mt-2 ">
+                  <Text className="text-loaknow-gray font-semibold text-sm">
+                    {`${date.getMonth() + 1}/${date.getDate()}/${date
+                      .getFullYear()
+                      .toString()
+                      .substr(
+                        -2
+                      )} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <Text className="text-loaknow-blue font-semibold mt-2">
+                Will this product be purchased?
+              </Text>
+              {purchased ? (
+                <View className="bg-loaknow-blue rounded-lg px-12 py-3 justify-center items-center mt-2">
+                  <Text className="text-loaknow-yellow font-semibold text-base">
+                    Purchased
+                  </Text>
+                </View>
+              ) : (
+                <View className="mt-2 flex flex-row justify-between ">
+                  <TouchableOpacity>
+                    <View className="bg-loaknow-gray/20 rounded-lg justify-center items-center w-36 py-3 ">
+                      <Text className="text-loaknow-gray font-semibold text-base">
+                        No
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={handlePurchased}>
+                    <View className="bg-loaknow-yellow rounded-lg justify-center items-center w-36 py-3 ">
+                      <Text className="text-loaknow-blue  font-semibold text-base">
+                        Yes
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              <Text className="text-loaknow-blue font-semibold mt-2">
+                Has the payment been made?
+              </Text>
+              {/* place holder image */}
+              <View className="flex flex-row my-3">
                 <TouchableOpacity onPress={pickImage}>
                   {image ? (
                     <Image
@@ -240,37 +264,37 @@ const StatusAdminScreen = ({ navigation, route }) => {
                   )}
                 </TouchableOpacity>
               </View>
+            </View>
           </View>
         </View>
+        {/* UPDATE TOUCHABLE BUTTON */}
+        <TouchableOpacity
+          onPress={handlePress}
+          className="bg-loaknow-yellow rounded-lg py-3 flex-row items-center justify-between px-2 pr-4 mt-2 mx-7"
+        >
+          <Text className="text-loaknow-blue font-semibold text-base">
+            Update
+          </Text>
+          <Image
+            source={require("../assets/images/arrow.png")}
+            style={{ width: 20, height: 20, transform: [{ rotate: "180deg" }] }}
+          />
+        </TouchableOpacity>
       </View>
-      {/* UPDATE TOUCHABLE BUTTON */}
-      <TouchableOpacity
-        onPress={handlePress}
-        className="bg-loaknow-yellow rounded-lg py-3 flex-row items-center justify-between px-2 pr-4 mt-2 mx-7"
-      >
-        <Text className="text-loaknow-blue font-semibold text-base">
-          Update
-        </Text>
-        <Image
-          source={require("../assets/images/arrow.png")}
-          style={{ width: 20, height: 20, transform: [{ rotate: "180deg" }] }}
-        />
-      </TouchableOpacity>
-    </View>
-  );
+    );
   }
 
   return (
     <View className="flex-1 bg-loaknow-blue h-screen w-screen justify-center items-center">
-      <Text className="text-loaknow-yellow font-bold text-2xl">
-        No Request
-      </Text>
-      <TouchableOpacity className="bg-loaknow-yellow p-4 rounded-3xl" onPress={() => navigation.navigate("RequestAdmin")}>
+      <Text className="text-loaknow-yellow font-bold text-2xl">No Request</Text>
+      <TouchableOpacity
+        className="bg-loaknow-yellow p-4 rounded-3xl"
+        onPress={() => navigation.navigate("RequestAdmin")}
+      >
         <Text>Back to Request Admin</Text>
       </TouchableOpacity>
     </View>
-  );    
-
+  );
 };
 
 const styles = StyleSheet.create({

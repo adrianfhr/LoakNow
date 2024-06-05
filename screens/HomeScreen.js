@@ -5,15 +5,14 @@ import { Image } from "react-native";
 import BottomNav from "../components/BottomNav";
 import { StyleSheet } from "react-native";
 import { Icon } from "react-native-paper";
-import {useFonts} from 'expo-font';
+import { useFonts } from "expo-font";
 
 const HomeScreen = ({ navigation }) => {
   const [fontsLoaded, fontError] = useFonts({
-    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
-    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-    'Poppins-Medium': require('../assets/fonts/Poppins-Medium.ttf'),
-    'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf'),
-
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
 
   if (!fontsLoaded && !fontError) {
@@ -27,9 +26,12 @@ const HomeScreen = ({ navigation }) => {
             {/* <View className="rounded-full bg-loaknow-bg/20 p-1.5 mr-2">
                                 <Image className=""source={require('../assets/images/burger.png')} style={{width:30, height:30}}/>
                             </View> */}
-            <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row w-full justify-center">
+            <View className="bg-loaknow-yellow rounded-3xl p-2 px-4 flex flex-row w-full items-center">
               <Icon source="map-marker-outline" size={25} />
-              <Text className="font-semibold text-base mr-2" style={{ fontSize: 20, fontFamily: 'Poppins-aSemiBold'}}>
+              <Text
+                className=""
+                style={{ fontSize: 17, fontFamily: "Poppins-Medium" }}
+              >
                 Jatinangor, West Java{" "}
               </Text>
             </View>
@@ -49,43 +51,69 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
           <View className="flex flex-row items-center justify-between mt-6">
-            <Text className="text-lg font-bold">Categories</Text>
+            <Text
+              className="text-lg font-bold"
+              style={{ fontSize: 17, fontFamily: "Poppins-SemiBold" }}
+            >
+              Categories
+            </Text>
             <Text className="underline text-loaknow-categories">
               See All Categories
             </Text>
           </View>
-          <View className="flex flex-row">
-            <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
-              <Image
-                source={require("../assets/images/categories1.png")}
-                className=""
-                style={{ width: 70, height: 70 }}
-              />
+          <ScrollView horizontal>
+            <View className="flex flex-row">
+              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+                <Image
+                  source={require("../assets/images/categories1.png")}
+                  className=""
+                  style={{ width: 70, height: 70 }}
+                />
+              </View>
+              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+                <Image
+                  source={require("../assets/images/categories1.png")}
+                  className=""
+                  style={{ width: 70, height: 70 }}
+                />
+              </View>
+              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+                <Image
+                  source={require("../assets/images/categories1.png")}
+                  className=""
+                  style={{ width: 70, height: 70 }}
+                />
+              </View>
+              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+                <Image
+                  source={require("../assets/images/categories1.png")}
+                  className=""
+                  style={{ width: 70, height: 70 }}
+                />
+              </View>
+              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+                <Image
+                  source={require("../assets/images/categories1.png")}
+                  className=""
+                  style={{ width: 70, height: 70 }}
+                />
+              </View>
+              <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
+                <Image
+                  source={require("../assets/images/categories1.png")}
+                  className=""
+                  style={{ width: 70, height: 70 }}
+                />
+              </View>
             </View>
-            <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
-              <Image
-                source={require("../assets/images/categories1.png")}
-                className=""
-                style={{ width: 70, height: 70 }}
-              />
-            </View>
-            <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
-              <Image
-                source={require("../assets/images/categories1.png")}
-                className=""
-                style={{ width: 70, height: 70 }}
-              />
-            </View>
-            <View className="flex items-center justify-center my-3 mr-3 rounded-full border-[3px] border-loaknow-yellow p-">
-              <Image
-                source={require("../assets/images/categories1.png")}
-                className=""
-                style={{ width: 70, height: 70 }}
-              />
-            </View>
-          </View>
+          </ScrollView>
 
-          <Text className="text-lg font-bold mb-4">New Arrival</Text>
+          <Text
+            className="mb-4"
+            style={{ fontSize: 17, fontFamily: "Poppins-SemiBold" }}
+          >
+            New Arrival
+          </Text>
           <View className="flex flex-row flex-wrap justify-between gap-5">
             <View className=" bg-loaknow-bg/20 rounded-xl p-2 w-40">
               <Image source={require("../assets/images/produkk.png")} />
@@ -124,7 +152,12 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <Text className="text-lg font-bold my-4">All Fashion</Text>
+          <Text
+            className="my-4"
+            style={{ fontSize: 17, fontFamily: "Poppins-SemiBold" }}
+          >
+            All Fashion
+          </Text>
           <View className="flex flex-row flex-wrap justify-between gap-5">
             <View className=" bg-loaknow-bg/20 rounded-xl p-2 w-40">
               <Image source={require("../assets/images/produkk.png")} />
