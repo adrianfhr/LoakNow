@@ -4,9 +4,12 @@ import { Image } from "react-native";
 import { StyleSheet } from "react-native";
 import Timeline from "react-native-timeline-flatlist";
 import { getFirestore } from "firebase/firestore";
+import { useState } from "react";
 
 const StatusProductScreen = ({ navigation, route }) => {
   const { product } = route.params;
+  const [isLoading, setIsLoading] = useState(true);
+
   console.log(product);
   const createdAt = new Date(
     product.created_at.seconds * 1000 + product.created_at.nanoseconds / 1000000
@@ -41,30 +44,67 @@ const StatusProductScreen = ({ navigation, route }) => {
     currency: "IDR",
   }).format(product.prices * product.stock);
 
-  const data = [
+  const [data, setData] = useState([
     {
-      title: "Request Accepted",
+      title: "Request Submitted",
       description:
-        "Your product has been accepted. Prepare your product immediately.",
+        "Your product has been submitted. Please wait for the next process.",
       icon: require("../assets/images/check-icon.png"),
-    },
-    {
-      title: "Prepare Product",
-      description:
-        "LoakNow will come to your place on May 20, 2024 between 09.00-12.00.",
-      icon: require("../assets/images/check-icon.png"),
-    },
-    {
-      title: "Product Will be Purchased",
-      description: "Product will be purchased by LoakNow. ",
-      icon: require("../assets/images/check-icon.png"),
-    },
-    {
-      title: "Payment has been Made",
-      description: "Click here to view details.",
-      icon: require("../assets/images/check-icon.png"),
-    },
-  ];
+    }
+  ]);
+
+  if(isLoading){
+    if (product.accepted) {
+      data.push({
+        title: "Request Accepted",
+        description: "Your request has been accepted.",
+        icon: require("../assets/images/check-icon.png"),
+      });
+    }
+
+    console.log("date_will_visit", product.date_will_visit);
+
+    if(product.date_will_visit) {
+      console.log("date_will_visit 2", product.date_will_visit);
+      const date_will_visit = new Date(
+        product.date_will_visit.seconds * 1000 + product.date_will_visit.nanoseconds / 1000000
+      );
+  
+      const formattedDateWillVisit = date_will_visit.toLocaleDateString("id-ID", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+  
+      const formattedTimeWillVisit = date_will_visit.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+  
+      data.push({
+        title: "Date Will Visit",
+        description: `${formattedDateWillVisit} ${formattedTimeWillVisit}`,
+        icon: require("../assets/images/check-icon.png"),
+      });
+  
+    }
+
+    if (product.purchased) {
+      data.push({
+        title: "Product Purchased",
+        description: "Your product has been purchased.",
+        icon: require("../assets/images/check-icon.png"),
+      });
+    }
+
+    if(product.payment_proof) {
+      data.push({
+        title: "Payment Proof",
+        description: "Payment proof has been uploaded.",
+        icon: require("../assets/images/check-icon.png"),
+      });
+    }
+  }
 
   return (
     <View className="flex-1 bg-white pt-10">
@@ -140,8 +180,24 @@ const StatusProductScreen = ({ navigation, route }) => {
                 innerCircle={"icon"}
                 lineColor="#FFD028"
                 style={{ marginLeft: -80, marginTop: 0, paddingRight: 16 }}
+                circleSize={20}
               />
+              
             </View>
+            {/* if payment proof not null */}
+            {product.payment_proof && (
+              <View className="flex-1">
+                <View className="flex flex-row items-center justify-between">
+                  <Text className="text-loaknow-blue font-semibold">
+                    Payment Proof
+                  </Text>
+                  <Image
+                    source={{ uri: product.payment_proof }}
+                    style={{ width: 50, height: 50 }}
+                  />
+                </View>
+              </View>
+            )}
           </View>
         </View>
       </View>

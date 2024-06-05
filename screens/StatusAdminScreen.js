@@ -1,5 +1,6 @@
 import {
   ScrollView,
+  ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -77,15 +78,31 @@ const StatusAdminScreen = ({ navigation, route }) => {
       });
     };
 
-    const hangleUpdate = async () => {
+    const handleUpdate = async () => {
       const db = getFirestore(app);
       const docRef = doc(db, "orders_loaknow", request.id);
+      const storage = getStorage();
+      if(image) {
+        const response_image = await fetch(image);
+        const blob = await response_image.blob();
+        const storageRef = ref(storage, `payment_proof/${request.id}`);
+        await uploadBytes(storageRef, blob)
+          .then((snapshot) => {
+            console.log("Uploaded a blob or file!", snapshot);
+          })
+          .then(async () => {
+            const url = await getDownloadURL(storageRef);
+            setImage(url);
+          });
+      }
       await updateDoc(docRef, {
-        purchased: purchased,
         accepted: accepted,
-        date_viewed: date,
+        purchased: purchased,
         updated_at: serverTimestamp(),
+        payment_proof: image,
       });
+      ToastAndroid.show("Data Updated", ToastAndroid.SHORT);
+      navigation.navigate("RequestAdmin");
     };
 
     const handlePurchased = () => {

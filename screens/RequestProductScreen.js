@@ -134,6 +134,10 @@ const RequestProductScreen = ({ navigation }) => {
             created_at: null,
             updated_at: null,
             username: "",
+            purchased: false,
+            accepted: false,
+            date_will_visit: null,
+            payment_proof: null,
           }}
           onSubmit={(values) => {
             handlePress(values);

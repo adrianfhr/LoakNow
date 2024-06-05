@@ -78,7 +78,7 @@ const TransactionScreen = ({ navigation, route }) => {
     }).format(transaction.prices * transaction.stock);
 
     return (
-      <View style={styles.card}>
+      <View key={transaction.id} style={styles.card}>
         <View style={styles.cardHeader}>
           <View className="flex flex-row items-center">
             <Image
