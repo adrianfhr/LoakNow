@@ -83,7 +83,7 @@ const RequestAdminScreen = ({ navigation }) => {
     }).format(request.prices * request.stock);
 
     return (
-      <View style={styles.card}>
+      <View key={request.id} style={styles.card}>
         <View style={styles.cardHeader}>
           <View className="flex flex-row items-center">
             <Image

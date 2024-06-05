@@ -1,5 +1,6 @@
 import {
   ScrollView,
+  ToastAndroid,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -9,9 +10,10 @@ import { useState } from "react";
 import { Image, Modal } from "react-native";
 import { StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { getFirestore, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { app } from "../firebase";
 import * as ImagePicker from "expo-image-picker";
+import { getStorage, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 
 const StatusAdminScreen = ({ navigation, route }) => {
@@ -54,10 +56,10 @@ const StatusAdminScreen = ({ navigation, route }) => {
     }).format(request.prices * request.stock);
   
     const [showNewView, setShowNewView] = useState(false);
-    const [date, setDate] = useState(new Date());
-    const [accepted, setAccepted] = useState(false);
-    const [purchased, setPurchased] = useState(false);
-    const [image, setImage] = useState(null);
+    const [date, setDate] = useState(request.date_will_visit);
+    const [accepted, setAccepted] = useState(request.accepted);
+    const [purchased, setPurchased] = useState(request.purchased);
+    const [image, setImage] = useState(request.payment_proof);
 
     const pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,17 +68,36 @@ const StatusAdminScreen = ({ navigation, route }) => {
         aspect: [4, 3],
         quality: 1,
       });
-    }
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
+    };
 
-    const hangleUpdate = async () => {
+    const handleUpdate = async () => {
       const db = getFirestore(app);
       const docRef = doc(db, "orders_loaknow", request.id);
+      const storage = getStorage();
+      if(image) {
+        const response_image = await fetch(image);
+        const blob = await response_image.blob();
+        const storageRef = ref(storage, `payment_proof/${request.id}`);
+        await uploadBytes(storageRef, blob)
+          .then((snapshot) => {
+            console.log("Uploaded a blob or file!", snapshot);
+          })
+          .then(async () => {
+            const url = await getDownloadURL(storageRef);
+            setImage(url);
+          });
+      }
       await updateDoc(docRef, {
-        purchased: purchased,
         accepted: accepted,
-        date_viewed: date,
+        purchased: purchased,
         updated_at: serverTimestamp(),
+        payment_proof: image,
       });
+      ToastAndroid.show("Data Updated", ToastAndroid.SHORT);
+      navigation.navigate("RequestAdmin");
     };
 
     const handlePurchased = () => {
@@ -86,7 +107,7 @@ const StatusAdminScreen = ({ navigation, route }) => {
     const handleAccept = () => {
       setAccepted(true);
     };
-  
+    
     const handlePress = () => {
       setShowNewView(true);
     };
@@ -245,7 +266,7 @@ const StatusAdminScreen = ({ navigation, route }) => {
       </View>
       {/* UPDATE TOUCHABLE BUTTON */}
       <TouchableOpacity
-        onPress={handlePress}
+        onPress={handleUpdate}
         className="bg-loaknow-yellow rounded-lg py-3 flex-row items-center justify-between px-2 pr-4 mt-2 mx-7"
       >
         <Text className="text-loaknow-blue font-semibold text-base">
