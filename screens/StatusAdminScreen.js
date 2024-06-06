@@ -101,9 +101,13 @@ const StatusAdminScreen = ({ navigation, route }) => {
         purchased: purchased,
         updated_at: serverTimestamp(),
         payment_proof: image,
-      });
+      })
+      .then(() => {
       ToastAndroid.show("Data Updated", ToastAndroid.SHORT);
-      navigation.navigate("RequestAdmin");
+        console.log("Document successfully updated!");
+        navigation.navigate("RequestAdmin");
+        
+      })
     };
 
     const handlePurchased = () => {
