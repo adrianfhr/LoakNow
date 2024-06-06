@@ -1,14 +1,8 @@
+import React, { useState, useEffect } from "react";
 import { View, Image, TextInput, ToastAndroid } from "react-native";
-import { Button, Title, HelperText, Text } from "react-native-paper";
-import { useState, useEffect } from "react";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { IconButton } from "react-native-paper";
+import { Button, Title, HelperText, Text, IconButton } from "react-native-paper";
 import { useFonts } from "expo-font";
-
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, getDoc, doc } from "firebase/firestore";
 
 const LoginScreen = ({ navigation }) => {
@@ -19,10 +13,9 @@ const LoginScreen = ({ navigation }) => {
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
   });
 
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
   const auth = getAuth();
+  const db = getFirestore();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -32,30 +25,25 @@ const LoginScreen = ({ navigation }) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const db = getFirestore();
-
 
   useEffect(() => {
     const checkIsAdmin = async () => {
       const user = auth.currentUser;
       if (user) {
         const docRef = doc(db, "users", user.uid);
-        getDoc(docRef)
-          .then((docSnap) => {
-            if (docSnap.exists()) {
-              console.log("Document data:", docSnap.data());
-              navigation.replace("Bottom", { screen: "Home" });
-              setIsLoading(false);
-            } else {
-              console.log("No such document!");
-              navigation.replace("RequestAdmin");
-              setIsLoading(false);
-            }
-          })
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+          navigation.replace("Bottom", { screen: "Home" });
+        } else {
+          console.log("No such document!");
+          navigation.replace("RequestAdmin");
+        }
       }
-    }
+      setIsLoading(false);
+    };
     checkIsAdmin();
-  }, [auth, navigation]);
+  }, [auth, navigation, db]);
 
   const validate = () => {
     let newErrors = {
@@ -93,47 +81,49 @@ const LoginScreen = ({ navigation }) => {
                 if (docSnap.exists()) {
                   console.log("Document data:", docSnap.data());
                   navigation.replace("Bottom", { screen: "Home" });
-                  setIsLoading(false);
                 } else {
                   console.log("No such document!");
                   navigation.replace("RequestAdmin");
-                  setIsLoading(false);
                 }
               })
+              .finally(() => setIsLoading(false));
           }
 
         })
         .catch((error) => {
-          if (error.code === "auth/invalid-credential") {
-            ToastAndroid.show("Wrong Username or Password", ToastAndroid.SHORT);
-          } else if (error.code === "auth/user-not-found") {
-            ToastAndroid.show("User not found", ToastAndroid.SHORT);
-          } else if (error.code === "auth/wrong-password") {
-            ToastAndroid.show("Incorrect password", ToastAndroid.SHORT);
-          } else if (error.code === "auth/too-many-requests") {
-            ToastAndroid.show(
-              "Too many attempts. Try again later.",
-              ToastAndroid.LONG
-            );
-          } else if (error.code === "auth/invalid-email") {
-            ToastAndroid.show("Invalid Format Email ", ToastAndroid.SHORT);
-          } else {
-            ToastAndroid.show(
-              "An unexpected error occurred",
-              ToastAndroid.LONG
-            );
+          let message = "An unexpected error occurred";
+          switch (error.code) {
+            case "auth/invalid-credential":
+              message = "Wrong Username or Password";
+              break;
+            case "auth/user-not-found":
+              message = "User not found";
+              break;
+            case "auth/wrong-password":
+              message = "Incorrect password";
+              break;
+            case "auth/too-many-requests":
+              message = "Too many attempts. Try again later.";
+              break;
+            case "auth/invalid-email":
+              message = "Invalid Format Email";
+              break;
           }
-          // console.error(error);
+          ToastAndroid.show(message, ToastAndroid.SHORT);
         });
     }
   };
 
+  if (!fontsLoaded) {
+    return null;
+  }
+
   if (isLoading) {
-    <View className="h-full justify-center items-center ">
-      <View>
+    return (
+      <View className="h-full justify-center items-center ">
         <Text className="text-loaknow-blue text-2xl">Loading. . . .</Text>
       </View>
-    </View>;
+    );
   }
 
   return (
