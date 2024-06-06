@@ -77,12 +77,16 @@ const StatusAdminScreen = ({ navigation, route }) => {
         aspect: [4, 3],
         quality: 1,
       });
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+      }
     };
 
     const handleUpdate = async () => {
       const db = getFirestore(app);
       const docRef = doc(db, "orders_loaknow", request.id);
       const storage = getStorage();
+
       if(image) {
         const response_image = await fetch(image);
         const blob = await response_image.blob();
@@ -96,14 +100,16 @@ const StatusAdminScreen = ({ navigation, route }) => {
             setImage(url);
           });
       }
+
       await updateDoc(docRef, {
         accepted: accepted,
         purchased: purchased,
         updated_at: serverTimestamp(),
         payment_proof: image,
+        date_will_visit: date,
       })
       .then(() => {
-      ToastAndroid.show("Data Updated", ToastAndroid.SHORT);
+        ToastAndroid.show("Data Updated", ToastAndroid.SHORT);
         console.log("Document successfully updated!");
         navigation.navigate("RequestAdmin");
         
