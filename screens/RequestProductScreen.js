@@ -98,6 +98,10 @@ const RequestProductScreen = ({ navigation }) => {
           value.created_at = serverTimestamp();
           value.updated_at = serverTimestamp();
           value.username = await getFullName();
+          value.categories = selectedCategory;
+          value.dangerous = selectedDanger === "Yes" ? true : false;
+          value.condition = selectedCondition;
+          
           try {
             const docRef = await addDoc(
               collection(db, "orders_loaknow"),
@@ -184,18 +188,14 @@ const RequestProductScreen = ({ navigation }) => {
               if (!values.details) {
                 errors.details = "Details must be there";
               }
-              if (!values.categories) {
-                errors.categories = "Categories must be there";
-              }
+
               if (!values.prices) {
                 errors.prices = "Prices must be there";
               }
               if (values.stock <= 0) {
                 errors.stock = "Stock must be greater than 0";
               }
-              if (values.condition < 0 || values.condition > 100) {
-                errors.condition = "Condition must be between 0 and 100";
-              }
+
               if (!image) {
                 errors.image = "Image must be there";
               }
@@ -295,14 +295,6 @@ const RequestProductScreen = ({ navigation }) => {
                     ))}
                   </Picker>
                 </View>
-                <TextInput
-                  className="rounded-full px-2 bg-loaknow-bg/20 mb-2"
-                  placeholder="Search Categories"
-                  underlineColor="transparent"
-                  activeUnderlineColor="transparent"
-                  value={values?.categories}
-                  onChangeText={handleChange("categories")}
-                />
                 <View className="flex flex-row gap-8 mb-3">
                   <View className="w-36">
                     <Text
@@ -370,15 +362,6 @@ const RequestProductScreen = ({ navigation }) => {
                         ))}
                       </Picker>
                     </View>
-                    <TextInput
-                      className="rounded-full px-2 bg-loaknow-bg/20 mb-2 w-20"
-                      placeholder="X %"
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      keyboardType="numeric"
-                      value={values?.condition}
-                      onChangeText={handleChange("condition")}
-                    />
                   </View>
                   <View>
                     <Text
@@ -408,15 +391,6 @@ const RequestProductScreen = ({ navigation }) => {
                         ))}
                       </Picker>
                     </View>
-
-                    <TextInput
-                      className="rounded-full px-2 bg-loaknow-bg/20 mb-2"
-                      placeholder="Yes/No"
-                      underlineColor="transparent"
-                      activeUnderlineColor="transparent"
-                      value={values?.dangerous}
-                      onChangeText={handleChange("dangerous")}
-                    />
                   </View>
                 </View>
                 <TouchableOpacity onPress={handleSubmit}>

@@ -112,6 +112,7 @@ const RegisterScreen = ({ navigation }) => {
           created_at: serverTimestamp(),
           updated_at: serverTimestamp(),
           uid: res.user.uid,
+          status: "user",
         });
         console.log("Document written with ID: ", userDocRef.id);
         ToastAndroid.show("Sign In Successfully", ToastAndroid.LONG);

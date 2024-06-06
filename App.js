@@ -205,8 +205,8 @@ const BottomNavigationAdmin = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Debug">
-        <Stack.Screen name="Debug" component={DebugScreen} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName="Login">
+        {/* <Stack.Screen name="Debug" component={DebugScreen} options={{ headerShown: false }} /> */}
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <Stack.Screen name="RequestProduct" component={RequestProductScreen} options={{ headerShown: false }} />
@@ -215,11 +215,9 @@ const App = () => {
         <Stack.Screen name="SellProduct" component={SellProductScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Transaction" component={TransactionScreen} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="FCM" component={FCMScreen} options={{ headerShown: false }} /> */}
         <Stack.Screen name="RequestAdmin" component={RequestAdminScreen} options={{ headerShown: false }} />
         <Stack.Screen name="StatusAdmin" component={StatusAdminScreen} options={{ headerShown: false }} />
         <Stack.Screen name="StatusProduct" component={StatusProductScreen} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="BottomAdmin" component={BottomNavigationAdmin} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

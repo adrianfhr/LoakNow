@@ -16,8 +16,9 @@ import {
   orderBy,
   getDocs,
 } from "firebase/firestore";
-import { app } from "../firebase";
+import { app} from "../firebase";
 import { useFonts } from "expo-font";
+import { getAuth, signOut } from "firebase/auth";
 
 const RequestAdminScreen = ({ navigation }) => {
   const [fontsLoaded, fontError] = useFonts({
@@ -188,6 +189,23 @@ const RequestAdminScreen = ({ navigation }) => {
     <View className="flex-1 bg-white pt-10">
       <View className="mx-7">
         <View className="border-b-[1px] border-loaknow-gray/20 flex flex-row items-center pb-2 mt-3 justify-center mb-4">
+          {/* make logout  */}
+          <TouchableOpacity
+            onPress={() => {
+              
+              const auth = getAuth();
+              signOut(auth).then(() => {
+                navigation.replace("Login");
+              });
+
+            }}
+            className="absolute left-0 z-[1000] bg-loaknow-gray/20 rounded-xl  flex items-center justify-center p-2"
+          >
+            <Text>
+              Logout
+              </Text>
+
+          </TouchableOpacity>
           <View className="flex-row items-center justify-evenly  w-48 gap-2">
             <Text
               className="text-xl"

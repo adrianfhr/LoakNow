@@ -9,6 +9,8 @@ import {
 import { IconButton } from "react-native-paper";
 import { useFonts } from "expo-font";
 
+import { getFirestore, getDoc, doc } from "firebase/firestore";
+
 const LoginScreen = ({ navigation }) => {
   const [fontsLoaded, fontError] = useFonts({
     "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
@@ -30,17 +32,29 @@ const LoginScreen = ({ navigation }) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const db = getFirestore();
+
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const checkIsAdmin = async () => {
+      const user = auth.currentUser;
       if (user) {
-        navigation.replace("Bottom", { screen: "Home" });
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
+        const docRef = doc(db, "users", user.uid);
+        getDoc(docRef)
+          .then((docSnap) => {
+            if (docSnap.exists()) {
+              console.log("Document data:", docSnap.data());
+              navigation.replace("Bottom", { screen: "Home" });
+              setIsLoading(false);
+            } else {
+              console.log("No such document!");
+              navigation.replace("RequestAdmin");
+              setIsLoading(false);
+            }
+          })
       }
-    });
-    return unsubscribe;
+    }
+    checkIsAdmin();
   }, [auth, navigation]);
 
   const validate = () => {
@@ -69,9 +83,25 @@ const LoginScreen = ({ navigation }) => {
     } else {
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          console.log("Signed in!");
-          ToastAndroid.show("Sign In Successfully", ToastAndroid.LONG);
-          navigation.replace("Bottom", { screen: "Home" });
+          console.log("Login success");
+
+          const user = auth.currentUser;
+          if (user) {
+            const docRef = doc(db, "users", user.uid);
+            getDoc(docRef)
+              .then((docSnap) => {
+                if (docSnap.exists()) {
+                  console.log("Document data:", docSnap.data());
+                  navigation.replace("Bottom", { screen: "Home" });
+                  setIsLoading(false);
+                } else {
+                  console.log("No such document!");
+                  navigation.replace("RequestAdmin");
+                  setIsLoading(false);
+                }
+              })
+          }
+
         })
         .catch((error) => {
           if (error.code === "auth/invalid-credential") {

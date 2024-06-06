@@ -12,11 +12,12 @@ import { StyleSheet } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   getFirestore,
-  collection,
-  query,
-  orderBy,
-  getDocs,
+  doc,
+  updateDoc,
+  serverTimestamp
+  
 } from "firebase/firestore";
+import { getStorage, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { app } from "../firebase";
 import * as ImagePicker from "expo-image-picker";
 
@@ -286,7 +287,7 @@ const StatusAdminScreen = ({ navigation, route }) => {
         </View>
         {/* UPDATE TOUCHABLE BUTTON */}
         <TouchableOpacity
-          onPress={handlePress}
+          onPress={handleUpdate}
           className="bg-loaknow-yellow rounded-lg py-3 flex-row items-center justify-between px-2 pr-4 mt-2 mx-7"
         >
           <Text className="text-loaknow-blue font-semibold text-base">
