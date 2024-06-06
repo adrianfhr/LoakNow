@@ -205,8 +205,8 @@ const BottomNavigationAdmin = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {/* <Stack.Screen name="Debug" component={DebugScreen} options={{ headerShown: false }} /> */}
+      <Stack.Navigator initialRouteName="Debug">
+        <Stack.Screen name="Debug" component={DebugScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <Stack.Screen name="RequestProduct" component={RequestProductScreen} options={{ headerShown: false }} />
