@@ -5,10 +5,14 @@ import { StyleSheet } from "react-native";
 import Timeline from "react-native-timeline-flatlist";
 import { getFirestore } from "firebase/firestore";
 import { useState } from "react";
+import { Modal } from "react-native";
+import { TouchableHighlight } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const StatusProductScreen = ({ navigation, route }) => {
   const { product } = route.params;
   const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   console.log(product);
   const createdAt = new Date(
@@ -50,10 +54,10 @@ const StatusProductScreen = ({ navigation, route }) => {
       description:
         "Your product has been submitted. Please wait for the next process.",
       icon: require("../assets/images/check-icon.png"),
-    }
+    },
   ]);
 
-  if(isLoading){
+  if (isLoading) {
     if (product.accepted) {
       data.push({
         title: "Request Accepted",
@@ -64,29 +68,35 @@ const StatusProductScreen = ({ navigation, route }) => {
 
     console.log("date_will_visit", product.date_will_visit);
 
-    if(product.date_will_visit) {
+    if (product.date_will_visit) {
       console.log("date_will_visit 2", product.date_will_visit);
       const date_will_visit = new Date(
-        product.date_will_visit.seconds * 1000 + product.date_will_visit.nanoseconds / 1000000
+        product.date_will_visit.seconds * 1000 +
+          product.date_will_visit.nanoseconds / 1000000
       );
-  
-      const formattedDateWillVisit = date_will_visit.toLocaleDateString("id-ID", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-  
-      const formattedTimeWillVisit = date_will_visit.toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  
+
+      const formattedDateWillVisit = date_will_visit.toLocaleDateString(
+        "id-ID",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
+
+      const formattedTimeWillVisit = date_will_visit.toLocaleTimeString(
+        "id-ID",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      );
+
       data.push({
         title: "Date Will Visit",
         description: `${formattedDateWillVisit} ${formattedTimeWillVisit}`,
         icon: require("../assets/images/check-icon.png"),
       });
-  
     }
 
     if (product.purchased) {
@@ -97,7 +107,7 @@ const StatusProductScreen = ({ navigation, route }) => {
       });
     }
 
-    if(product.payment_proof) {
+    if (product.payment_proof) {
       data.push({
         title: "Payment Proof",
         description: "Payment proof has been uploaded.",
@@ -168,11 +178,23 @@ const StatusProductScreen = ({ navigation, route }) => {
           <View className="flex-1 flex-row mt-5">
             <View className="w-32 ">
               {/* <Text className>15 April 2024 23:40</Text> */}
-              <Text className="text-loaknow-blue font-semibold">
-                Last Update
-              </Text>
+              <Text className="font-bold">Last Update</Text>
               <Text>{formattedDateUpdatedDate}</Text>
               <Text>{formattedTimeUpdate}</Text>
+              {product.payment_proof && (
+                <View className="flex-1 mt-4">
+                  <View className="flex  ">
+                    <Text className="font-bold">Payment Proof</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setModalVisible(true);
+                      }}
+                    >
+                      <Text className="font-bold text-loaknow-blue">Click here</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
             </View>
             <View className="flex-1">
               <Timeline
@@ -182,22 +204,45 @@ const StatusProductScreen = ({ navigation, route }) => {
                 style={{ marginLeft: -80, marginTop: 0, paddingRight: 16 }}
                 circleSize={20}
               />
-              
             </View>
             {/* if payment proof not null */}
-            {product.payment_proof && (
-              <View className="flex-1">
-                <View className="flex flex-row items-center justify-between">
-                  <Text className="text-loaknow-blue font-semibold">
-                    Payment Proof
-                  </Text>
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+                onStartShouldSetResponder={() => {
+                  setModalVisible(false);
+                  return true;
+                }}
+              >
+                <View style={{}} onStartShouldSetResponder={() => true}>
                   <Image
                     source={{ uri: product.payment_proof }}
-                    style={{ width: 50, height: 50 }}
+                    style={{ width: 300, height: 300 }}
                   />
+
+                  <TouchableHighlight
+                    onPress={() => {
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    <Text>Hide Modal</Text>
+                  </TouchableHighlight>
                 </View>
               </View>
-            )}
+            </Modal>
           </View>
         </View>
       </View>

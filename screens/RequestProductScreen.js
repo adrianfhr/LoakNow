@@ -200,12 +200,6 @@ const RequestProductScreen = ({ navigation }) => {
                 errors.image = "Image must be there";
               }
 
-              if (errors) {
-                ToastAndroid.show(
-                  "Please fill all the required fields",
-                  ToastAndroid.SHORT
-                );
-              }
 
               return errors;
             }}
